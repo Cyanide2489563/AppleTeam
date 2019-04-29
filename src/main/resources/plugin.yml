@@ -1,0 +1,6 @@
+name: Team
+version: @version@
+main: ayrou.team.Team
+api-version: 1.13
+authors: [Cyanide]
+description: 隊伍插件
