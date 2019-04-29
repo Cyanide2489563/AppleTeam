@@ -1,6 +1,6 @@
-name: Team
+name: Main
 version: @version@
-main: ayrou.team.Team
+main: ayrou.team.Main
 api-version: 1.13
 authors: [Cyanide]
 description: 隊伍插件
