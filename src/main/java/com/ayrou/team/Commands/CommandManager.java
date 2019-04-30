@@ -26,7 +26,7 @@ public class CommandManager implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(message.Guild_Command_Invalid_Sender);
+            sender.sendMessage(message.getMessage("Team_Command_Invalid_Sender"));
             return true;
         }
 
@@ -34,14 +34,14 @@ public class CommandManager implements CommandExecutor {
 
         if (arg1.getName().equalsIgnoreCase(command)) {
             if (args.length == 0) {
-                player.sendMessage(message.Guild_Command_Help);
+                player.sendMessage(message.getMessage("Team_Command_Help"));
                 return true;
             }
 
             SubCommand target = this.get(args[0]);
 
             if (target == null) {
-                player.sendMessage(message.Guild_Command_Invalid_SubCommand);
+                player.sendMessage(message.getMessage("Team_Command_Invalid_SubCommand"));
                 return true;
             }
 
@@ -52,7 +52,7 @@ public class CommandManager implements CommandExecutor {
                 target.onCommand(player,args);
             }
             catch (Exception e) {
-                player.sendMessage(message.Guild_Command_Error);
+                player.sendMessage(message.getMessage("Team_Command_Error"));
                 e.printStackTrace();
             }
         }
