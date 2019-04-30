@@ -9,7 +9,7 @@ public class Team {
     private ArrayList<Player> members;
     private HashMap<String, Long> invitations;
     private Player leader;
-    private String teamname;
+    private String teamName;
 
     public void createTeam(String teamName, Player leader) {
         members = new ArrayList<>();
@@ -20,5 +20,13 @@ public class Team {
 
     public boolean isMember(Player player) {
         return members.contains(player);
+    }
+
+    public int getTameSize() {
+        return members.size();
+    }
+
+    public String getTeamName() {
+        return teamName;
     }
 }
