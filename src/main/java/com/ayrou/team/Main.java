@@ -39,6 +39,10 @@ public final class Main extends JavaPlugin {
         return plugin;
     }
 
+    public static TeamManager getTeamManager() {
+        return teamManager;
+    }
+
     public static Message getMessage() {
         return message;
     }

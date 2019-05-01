@@ -1,9 +1,11 @@
 package com.ayrou.team.Team;
 
+import com.ayrou.team.Main;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Team {
 
@@ -31,5 +33,46 @@ public class Team {
 
     public String getTeamName() {
         return teamName;
+    }
+
+    public boolean getVisibility() {
+        return visibility;
+    }
+
+    public boolean isLeaderInviteOnly() {
+        return leaderInviteOnly;
+    }
+
+    public boolean isLeader(Player player) {
+        if (leader.equals(player)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isFull() {
+        return members.size() < Main.getTeamManager().getMaximum();
+    }
+
+    void checkInvitations() {
+        for (Map.Entry<Player, Long> invitation : invitations.entrySet()) {
+            if (invitation.getValue() < System.currentTimeMillis()) {
+                invitation.getKey().sendMessage("");
+                invitations.remove(invitation.getKey());
+                return;
+            }
+        }
+    }
+
+    public void invite(Player player) {
+        if (!members.contains(player) && !invitations.containsKey(player)) {
+            invitations.put(player, System.currentTimeMillis() + Main.getTeamManager().getInviteTimeout());
+        }
+    }
+
+    public void sendMessages(String messages) {
+        for (Player player : members) {
+            player.sendMessage(messages);
+        }
     }
 }

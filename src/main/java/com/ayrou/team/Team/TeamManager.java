@@ -9,14 +9,12 @@ import java.util.ArrayList;
 public class TeamManager {
 
     private Main plugin = Main.getInstance();
-    private ArrayList<Team> team;
+    private ArrayList<Team> teams;
     private int maximum; //隊伍人數上限
-    private boolean leaderInviteOnly; //是否僅限隊長邀請
-    private boolean isPublic;
     private long inviteTimeout; //邀請失效時間
 
     public TeamManager() {
-        team = new ArrayList<>();
+        teams = new ArrayList<>();
         getConfig();
     }
 
@@ -38,15 +36,6 @@ public class TeamManager {
         }
     }
 
-    public boolean isLeaderInviteOnly() {
-        return leaderInviteOnly;
-    }
-
-    //取得經驗分享公式
-    public boolean isPublic() {
-        return isPublic;
-    }
-
     //取得團隊人數上限
     public int getMaximum() {
         return maximum;
@@ -58,17 +47,25 @@ public class TeamManager {
     }
 
     public void addTeam(Team team) {
-        this.team.add(team);
+        this.teams.add(team);
+    }
+
+    public void removeTeam(Team team) {
+        teams.remove(team);
     }
 
     public Team getTeam(Player player) {
-        for (Team team : team) {
+        for (Team team : teams) {
             if (team.isMember(player)) return team;
         }
         return null;
     }
 
     public void update() {
-
+        if (teams != null) {
+            for (Team team : teams) {
+                team.checkInvitations();
+            }
+        }
     }
 }
