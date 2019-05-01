@@ -1,6 +1,9 @@
-name: Main
-version: @version@
-main: ayrou.team.Main
+name: AppleTeam
+version: 0.0.1
+main: com.ayrou.team.Main
 api-version: 1.13
-authors: [Cyanide]
-description: 隊伍插件
+authors: [apple14789]
+description: teamPlugin
+depend: [SmartInvs]
+commands:
+  team:

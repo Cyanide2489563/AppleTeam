@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 public class Menu extends SubCommand {
     @Override
     public void onCommand(Player player, String[] args) {
-
+        com.ayrou.team.GUI.Menu.getInventory(player).open(player);
     }
 
     @Override
