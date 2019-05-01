@@ -6,14 +6,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Team {
+
     private ArrayList<Player> members;
-    private HashMap<String, Long> invitations;
+    private HashMap<Player, Long> invitations;
     private Player leader;
     private String teamName;
+    private boolean leaderInviteOnly;
+    private boolean visibility;
 
     public void createTeam(String teamName, Player leader) {
         members = new ArrayList<>();
-        invitations = new HashMap<String, Long>();
+        invitations = new HashMap<Player, Long>();
         members.add(leader);
         this.leader = leader;
     }

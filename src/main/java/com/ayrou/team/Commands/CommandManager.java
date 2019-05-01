@@ -1,5 +1,6 @@
 package com.ayrou.team.Commands;
 
+import com.ayrou.team.Commands.Command.Menu;
 import com.ayrou.team.Main;
 import com.ayrou.team.Message.Message;
 import org.bukkit.command.Command;
@@ -21,6 +22,7 @@ public class CommandManager implements CommandExecutor {
     public void setup() {
         Objects.requireNonNull(plugin.getCommand(command)).setExecutor(this);
         Objects.requireNonNull(plugin.getCommand(command)).setTabCompleter(new CommandTabManager());
+        this.commands.add(new Menu());
     }
 
     @Override

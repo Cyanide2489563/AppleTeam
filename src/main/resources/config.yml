@@ -2,8 +2,6 @@
 maximum: 5
 # 邀請逾時時間
 inviteTimeout: 30
-# 只能由隊長邀請
-leaderInviteOnly: true
 # 權限
 Groups:
   Member:
