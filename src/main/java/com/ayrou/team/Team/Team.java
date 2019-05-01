@@ -1,6 +1,7 @@
 package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
+import com.ayrou.team.Message.Message;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -9,6 +10,9 @@ import java.util.Map;
 
 public class Team {
 
+    private Main plugin = Main.getInstance();
+    private Message message = Main.getMessage();
+    private TeamManager teamManager = Main.getTeamManager();
     private ArrayList<Player> members;
     private HashMap<Player, Long> invitations;
     private Player leader;
@@ -57,7 +61,7 @@ public class Team {
     void checkInvitations() {
         for (Map.Entry<Player, Long> invitation : invitations.entrySet()) {
             if (invitation.getValue() < System.currentTimeMillis()) {
-                invitation.getKey().sendMessage("");
+                invitation.getKey().sendMessage(message.getMessage("Team_Invite_TimeOut"));
                 invitations.remove(invitation.getKey());
                 return;
             }
@@ -66,7 +70,7 @@ public class Team {
 
     public void invite(Player player) {
         if (!members.contains(player) && !invitations.containsKey(player)) {
-            invitations.put(player, System.currentTimeMillis() + Main.getTeamManager().getInviteTimeout());
+            invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
         }
     }
 

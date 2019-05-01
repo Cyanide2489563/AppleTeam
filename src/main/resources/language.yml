@@ -7,5 +7,5 @@ Team_Command_Help: "輸入/team help 來檢視命令列表"
 Team_Command_Invalid_SubCommand: "錯誤的子命令"
 Team_Command_Error: "發生錯誤請稍後在試"
 #邀請
-
+Team_Invite_TimeOut: "邀請已過期"
 #離開
