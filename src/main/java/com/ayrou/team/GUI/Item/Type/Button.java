@@ -21,7 +21,7 @@ public class Button implements Item {
         ItemMeta itemmeta = itemStack.getItemMeta();
 
         Objects.requireNonNull(itemmeta).setUnbreakable(true);
-        itemmeta.setDisplayName("");
+        itemmeta.setDisplayName(type.getName());
         itemmeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
         itemStack.setItemMeta(itemmeta);
         return itemStack;

@@ -28,12 +28,14 @@ public class MenuView implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         contents.fillBorders(ClickableItem.empty(new Button().createItemStack(ButtonType.BLANK)));
 
-        contents.set(1, 1, ClickableItem.of(new ItemStack(Material.STONE_HOE),
+        contents.set(1, 1, ClickableItem.of(new Button().createItemStack(ButtonType.Affirmative),
                 e -> {
+                    if (e.isLeftClick()) {
 
+                    }
                 }));
 
-        contents.set(1, 7, ClickableItem.of(new ItemStack(Material.BARRIER),
+        contents.set(1, 7, ClickableItem.of(new ItemStack(Material.DIAMOND_HOE),
                 e -> player.closeInventory()));
     }
 
