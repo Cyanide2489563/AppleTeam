@@ -12,22 +12,21 @@ import org.bukkit.inventory.ItemStack;
 
 public class MenuView implements InventoryProvider {
 
-    MenuView(Player player) {
+    private MenuView(Player player) {
 
     }
 
     public static SmartInventory getInventory(Player player) {
         return SmartInventory.builder()
                 .provider(new MenuView(player))
-                .size(3, 9)
+                .size(6, 9)
                 .title("Inventory of " + player.getName())
                 .build();
     }
 
     @Override
     public void init(Player player, InventoryContents contents) {
-        contents.fillBorders(ClickableItem.empty(new Button().createItemStack(ButtonType.BLANK)));
-
+        contents.fill(ClickableItem.empty(new Button().createItemStack(ButtonType.BLANK)));
         contents.set(1, 1, ClickableItem.of(new Button().createItemStack(ButtonType.Affirmative),
                 e -> {
                     if (e.isLeftClick()) {
