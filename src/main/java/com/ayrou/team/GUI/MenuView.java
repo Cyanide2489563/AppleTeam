@@ -20,21 +20,30 @@ public class MenuView implements InventoryProvider {
         return SmartInventory.builder()
                 .provider(new MenuView(player))
                 .size(6, 9)
-                .title("Inventory of " + player.getName())
+                .title("隊伍面板")
                 .build();
     }
 
     @Override
     public void init(Player player, InventoryContents contents) {
         contents.fill(ClickableItem.empty(new Button().createItemStack(ButtonType.BLANK)));
-        contents.set(1, 1, ClickableItem.of(new Button().createItemStack(ButtonType.Affirmative),
+        contents.set(1, 8, ClickableItem.of(new Button().createItemStack(ButtonType.Prev_Page),
                 e -> {
-                    if (e.isLeftClick()) {
 
+                }));
+        contents.set(3, 8, ClickableItem.of(new Button().createItemStack(ButtonType.Next_Page),
+                e -> {
+
+                }));
+        contents.set(0, 1, ClickableItem.of(new Button().createItemStack(ButtonType.All),
+                e -> {
+                    if (e.isRightClick()) {
+                        contents.set(1, 1,ClickableItem.empty(new Button().createItemStack(ButtonType.Public)));
                     }
                 }));
-
-        contents.set(1, 7, ClickableItem.of(new ItemStack(Material.DIAMOND_HOE),
+        contents.set(0, 2, ClickableItem.of(new Button().createItemStack(ButtonType.Search),
+                e -> player.closeInventory()));
+        contents.set(0, 7, ClickableItem.of(new ItemStack(Material.DIAMOND_HOE),
                 e -> player.closeInventory()));
     }
 
