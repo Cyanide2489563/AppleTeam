@@ -16,7 +16,8 @@ public enum ButtonType {
     Search(12,"搜尋"),
     Prev_Page(13,"上一頁"),
     Next_Page(14,"下一頁"),
-    All(15,"全部");
+    All(15,"全部"),
+    GUI_BACKGROUND(119,"");
 
     private int Value;
     private String Name;

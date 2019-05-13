@@ -45,6 +45,7 @@ public class MenuView implements InventoryProvider {
                 e -> player.closeInventory()));
         contents.set(0, 7, ClickableItem.of(new ItemStack(Material.DIAMOND_HOE),
                 e -> player.closeInventory()));
+        contents.set(5, 0,ClickableItem.empty(new Button().createItemStack(ButtonType.GUI_BACKGROUND)));
     }
 
     @Override
