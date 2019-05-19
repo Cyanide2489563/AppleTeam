@@ -3,6 +3,7 @@ package com.ayrou.team;
 import com.ayrou.team.Commands.CommandManager;
 import com.ayrou.team.Message.Message;
 import com.ayrou.team.Team.TeamManager;
+import com.ayrou.team.Utility.UpdataTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +29,7 @@ public final class Main extends JavaPlugin {
         CommandManager commandManager = new CommandManager();
         commandManager.setup();
         info(message.getMessage("Plugin_Initialize"));
+        new UpdataTask(plugin,teamManager);
     }
 
     @Override

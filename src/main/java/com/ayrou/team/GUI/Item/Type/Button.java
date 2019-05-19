@@ -26,6 +26,7 @@ public class Button implements Item {
         itemMeta.setDisplayName(ChatColor.RESET + type.getName());
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
         itemStack.setItemMeta(itemMeta);
+
         return itemStack;
     }
 }
