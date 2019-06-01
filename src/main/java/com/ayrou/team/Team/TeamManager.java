@@ -1,17 +1,18 @@
 package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
+import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class TeamManager {
 
     private Main plugin = Main.getInstance();
     private ArrayList<Team> teams;
-    private int maximum; //隊伍人數上限
-    private long inviteTimeout; //邀請失效時間
+    int maximum; //隊伍人數上限
+    long inviteTimeout; //邀請失效時間
 
     public TeamManager() {
         teams = new ArrayList<>();
@@ -36,25 +37,23 @@ public class TeamManager {
         }
     }
 
-    //取得團隊人數上限
-    public int getMaximum() {
-        return maximum;
-    }
-
-    //取得邀請過期時間
-    public long getInviteTimeout() {
-        return inviteTimeout;
-    }
-
-    public void addTeam(Team team) {
+    public void createTeam(@NotNull String teamName, @NotNull UUID leader) {
+        Team team = new Team(teamName,leader);
         this.teams.add(team);
     }
 
-    public void removeTeam(Team team) {
+    public void removeTeam(@NotNull Team team) {
         teams.remove(team);
     }
 
-    public Team getTeam(Player player) {
+    public boolean hasTeam(@NotNull UUID player) {
+        for (Team team : teams) {
+            if (team.isMember(player)) return true;
+        }
+        return false;
+    }
+
+    public Team getTeam(@NotNull UUID player) {
         for (Team team : teams) {
             if (team.isMember(player)) return team;
         }

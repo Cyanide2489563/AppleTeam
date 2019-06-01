@@ -7,6 +7,7 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.Pagination;
+import fr.minuskube.inv.content.SlotIterator;
 import org.bukkit.entity.Player;
 
 public class MenuView implements InventoryProvider {
@@ -27,7 +28,7 @@ public class MenuView implements InventoryProvider {
 
         ClickableItem[] items = new ClickableItem[36];
 
-        Button button = new Button();
+
 
         items[0] = ClickableItem.of(button.createItemStack(ButtonType.All),
             e -> {
@@ -38,6 +39,19 @@ public class MenuView implements InventoryProvider {
 
                 }
         });
+        items[1] = ClickableItem.of(button.createItemStack(ButtonType.Public),
+                e -> {
+                    if (e.isRightClick()) {
+
+                    }
+                    if (e.isLeftClick()) {
+
+                    }
+                });
+
+        pagination.setItems(items);
+        pagination.setItemsPerPage(40);
+        pagination.addToIterator(contents.newIterator(SlotIterator.Type.HORIZONTAL, 0, 0));
 
         contents.set(0, 5, ClickableItem.empty(new Button().createItemStack(ButtonType.GUI_BACKGROUND_UP)));
         contents.set(7, 5, ClickableItem.empty(new Button().createItemStack(ButtonType.GUI_BACKGROUND_DOWN)));

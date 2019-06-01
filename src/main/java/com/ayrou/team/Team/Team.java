@@ -2,32 +2,36 @@ package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
 import com.ayrou.team.Message.Message;
-import org.bukkit.entity.Player;
+import com.sun.istack.internal.NotNull;
+import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class Team {
+class Team {
 
-    private Main plugin = Main.getInstance();
     private Message message = Main.getMessage();
     private TeamManager teamManager = Main.getTeamManager();
-    private ArrayList<Player> members;
-    private HashMap<Player, Long> invitations;
-    private Player leader;
+
     private String teamName;
     private boolean leaderInviteOnly;
     private boolean visibility;
+    private boolean encryption;
+    private byte[] password;
+    private UUID leader;
+    private ArrayList<UUID> members;
+    private HashMap<UUID, Long> invitations;
 
-    public void createTeam(String teamName, Player leader) {
-        members = new ArrayList<>();
-        invitations = new HashMap<Player, Long>();
-        members.add(leader);
+    Team(@NotNull String teamName, @NotNull UUID leader, Boolean visibility, Boolean encryption) {
+        this.teamName = teamName;
+        this.visibility = visibility;
+        this.encryption = encryption;
         this.leader = leader;
+        members = new ArrayList<>();
+        members.add(leader);
+        invitations = new HashMap<>();
     }
 
-    public boolean isMember(Player player) {
+    public boolean isMember(@NotNull UUID player) {
         return members.contains(player);
     }
 
@@ -47,36 +51,34 @@ public class Team {
         return leaderInviteOnly;
     }
 
-    public boolean isLeader(Player player) {
-        if (leader.equals(player)) {
-            return true;
-        }
-        return false;
+    public boolean isLeader(@NotNull UUID player) {
+        return leader.equals(player);
     }
 
     public boolean isFull() {
-        return members.size() < Main.getTeamManager().getMaximum();
+        return members.size() < teamManager.maximum;
     }
 
     void checkInvitations() {
-        for (Map.Entry<Player, Long> invitation : invitations.entrySet()) {
+        for (Map.Entry<UUID, Long> invitation : invitations.entrySet()) {
             if (invitation.getValue() < System.currentTimeMillis()) {
-                invitation.getKey().sendMessage(message.getMessage("Team_Invite_TimeOut"));
+                Objects.requireNonNull(Bukkit.getPlayer(invitation.getKey()))
+                        .sendMessage(message.getMessage("Team_Invite_TimeOut"));
                 invitations.remove(invitation.getKey());
                 return;
             }
         }
     }
 
-    public void invite(Player player) {
+    public void invite(@NotNull UUID player) {
         if (!members.contains(player) && !invitations.containsKey(player)) {
-            invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
+            invitations.put(player, System.currentTimeMillis() + teamManager.inviteTimeout);
         }
     }
 
-    public void sendMessages(String messages) {
-        for (Player player : members) {
-            player.sendMessage(messages);
+    public void sendMessages(@NotNull String messages) {
+        for (UUID player : members) {
+            Objects.requireNonNull(Bukkit.getPlayer(player)).sendMessage(messages);
         }
     }
 }

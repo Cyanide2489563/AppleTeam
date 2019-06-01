@@ -4,6 +4,7 @@ import com.ayrou.team.Commands.CommandManager;
 import com.ayrou.team.Message.Message;
 import com.ayrou.team.Team.TeamManager;
 import com.ayrou.team.Utility.UpdataTask;
+import com.sun.istack.internal.NotNull;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,15 +46,15 @@ public final class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("[AppleTeam] §4" + string);
     }
 
-    public static Main getInstance() {
+    public static @NotNull Main getInstance() {
         return plugin;
     }
 
-    public static TeamManager getTeamManager() {
+    public static @NotNull TeamManager getTeamManager() {
         return teamManager;
     }
 
-    public static Message getMessage() {
+    public static @NotNull Message getMessage() {
         return message;
     }
 
