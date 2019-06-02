@@ -10,7 +10,7 @@ import java.util.UUID;
 public class TeamManager {
 
     private Main plugin = Main.getInstance();
-    private ArrayList<Team> teams;
+    private static ArrayList<Team> teams;
     private int maximum; //隊伍人數上限
     private long inviteTimeout; //邀請失效時間
 
@@ -45,15 +45,6 @@ public class TeamManager {
         return inviteTimeout;
     }
 
-    public void createTeam(@NotNull String teamName, @NotNull UUID leader) {
-        Team team = new Team.Builder()
-                .setName(teamName)
-                .setLeader(leader)
-                .create();
-
-        this.teams.add(team);
-    }
-
     public boolean removeTeam(@NotNull Team team) {
         teams.remove(team);
         return !teams.contains(team);
@@ -72,6 +63,52 @@ public class TeamManager {
             for (Team team : teams) {
                 team.checkInvitations();
             }
+        }
+    }
+
+    static class Builder {
+        String name;
+        UUID leader;
+        Visibility visibility;
+        boolean encryption;
+        byte[] password;
+        boolean leaderInviteOnly;
+
+        Builder setName(@NotNull String name) {
+            this.name = name;
+            return this;
+        }
+
+        Builder setLeader(@NotNull UUID player) {
+            this.leader = player;
+            return this;
+        }
+
+        Builder setlederInviteOnly() {
+            this.leaderInviteOnly = true;
+            return this;
+        }
+
+        Builder setPublic() {
+            this.visibility = Visibility.Public;
+            return this;
+        }
+
+        Builder setPrivate() {
+            this.visibility = Visibility.Private;
+            return this;
+        }
+
+        Builder setEncryption(@NotNull byte[] password) {
+            this.encryption = true;
+            this.password = password;
+            return this;
+        }
+
+        Team create() {
+            Team team = new Team(this);
+            TeamManager.teams.add(team);
+            return team;
         }
     }
 }

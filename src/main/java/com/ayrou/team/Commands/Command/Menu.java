@@ -1,7 +1,6 @@
 package com.ayrou.team.Commands.Command;
 
 import com.ayrou.team.Commands.SubCommand;
-import com.ayrou.team.GUI.MenuView;
 import org.bukkit.entity.Player;
 
 public class Menu extends SubCommand {

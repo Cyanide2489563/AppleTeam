@@ -31,7 +31,6 @@ public final class Main extends JavaPlugin {
         commandManager.setup();
         info(message.getMessage("Plugin_Initialize"));
         new UpdataTask(plugin,teamManager);
-
     }
 
     @Override
