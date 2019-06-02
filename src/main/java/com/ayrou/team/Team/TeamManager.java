@@ -47,8 +47,11 @@ public class TeamManager {
 
     public void createTeam(@NotNull String teamName, @NotNull UUID leader) {
         Team team = new Team.Builder()
+                .setName(teamName)
+                .setLeader(leader)
+                .create();
 
-        this.teams.add();
+        this.teams.add(team);
     }
 
     public boolean removeTeam(@NotNull Team team) {
