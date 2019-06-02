@@ -11,8 +11,8 @@ public class TeamManager {
 
     private Main plugin = Main.getInstance();
     private ArrayList<Team> teams;
-    int maximum; //隊伍人數上限
-    long inviteTimeout; //邀請失效時間
+    private int maximum; //隊伍人數上限
+    private long inviteTimeout; //邀請失效時間
 
     public TeamManager() {
         teams = new ArrayList<>();
@@ -37,27 +37,31 @@ public class TeamManager {
         }
     }
 
-    public void createTeam(@NotNull String teamName, @NotNull UUID leader) {
-        Team team = new Team(teamName,leader);
-        this.teams.add(team);
+    int getMaximum() {
+        return maximum;
     }
 
-    public void removeTeam(@NotNull Team team) {
+    long getInviteTimeout() {
+        return inviteTimeout;
+    }
+
+    public void createTeam(@NotNull String teamName, @NotNull UUID leader) {
+        Team team = new Team.Builder()
+
+        this.teams.add();
+    }
+
+    public boolean removeTeam(@NotNull Team team) {
         teams.remove(team);
+        return !teams.contains(team);
     }
 
     public boolean hasTeam(@NotNull UUID player) {
-        for (Team team : teams) {
-            if (team.isMember(player)) return true;
-        }
-        return false;
+        return teams.stream().filter(team -> team.isMember(player)).findFirst().orElse(null) != null;
     }
 
     public Team getTeam(@NotNull UUID player) {
-        for (Team team : teams) {
-            if (team.isMember(player)) return team;
-        }
-        return null;
+        return teams.stream().filter(team -> team.isMember(player)).findFirst().orElse(null);
     }
 
     public void update() {
