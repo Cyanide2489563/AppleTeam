@@ -1,7 +1,7 @@
 package com.ayrou.team.Team;
 
+import com.avaje.ebean.validation.NotNull;
 import com.ayrou.team.Main;
-import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -45,28 +45,27 @@ public class TeamManager {
         return inviteTimeout;
     }
 
-    public boolean removeTeam(@NotNull Team team) {
+    public boolean removeTeam(Team team) {
+        if (team == null) throw new NullPointerException();
         teams.remove(team);
         return !teams.contains(team);
     }
 
-    public boolean hasTeam(@NotNull UUID player) {
+    public boolean hasTeam(UUID player) {
+        if (player == null) throw new NullPointerException();
         return teams.stream().filter(team -> team.isMember(player)).findFirst().orElse(null) != null;
     }
 
-    public Team getTeam(@NotNull UUID player) {
+    public Team getTeam(UUID player) {
+        if (player == null) throw new NullPointerException();
         return teams.stream().filter(team -> team.isMember(player)).findFirst().orElse(null);
     }
 
     public void update() {
-        if (teams != null) {
-            for (Team team : teams) {
-                team.checkInvitations();
-            }
-        }
+        teams.forEach(Team::checkInvitations);
     }
 
-    static class Builder {
+    public static class Builder {
         String name;
         UUID leader;
         Visibility visibility;
@@ -74,12 +73,14 @@ public class TeamManager {
         byte[] password;
         boolean leaderInviteOnly;
 
-        Builder setName(@NotNull String name) {
+        Builder setName(String name) {
+            if (name == null) throw new NullPointerException();
             this.name = name;
             return this;
         }
 
-        Builder setLeader(@NotNull UUID player) {
+        Builder setLeader(UUID player) {
+            if (player == null) throw new NullPointerException();
             this.leader = player;
             return this;
         }
@@ -99,7 +100,8 @@ public class TeamManager {
             return this;
         }
 
-        Builder setEncryption(@NotNull byte[] password) {
+        Builder setEncryption(byte[] password) {
+            if (password == null) throw new NullPointerException();
             this.encryption = true;
             this.password = password;
             return this;

@@ -7,7 +7,7 @@ public class Menu extends SubCommand {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        MenuView.getInventory(player).open(player);
+
     }
 
     @Override

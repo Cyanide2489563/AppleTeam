@@ -2,7 +2,6 @@ package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
 import com.ayrou.team.Message.Message;
-import com.sun.istack.internal.NotNull;
 import org.bukkit.Bukkit;
 
 import java.util.*;
@@ -35,7 +34,7 @@ final class Team {
         this.reviewList = new HashMap<>();
     }
 
-    public boolean isMember(@NotNull UUID player) {
+    public boolean isMember(UUID player) {
         return members.contains(player);
     }
 
@@ -59,7 +58,7 @@ final class Team {
         return leaderInviteOnly;
     }
 
-    public boolean isLeader(@NotNull UUID player) {
+    public boolean isLeader(UUID player) {
         return leader.equals(player);
     }
 
@@ -78,13 +77,13 @@ final class Team {
         }
     }
 
-    public void invite(@NotNull UUID player) {
+    public void invite(UUID player) {
         if (!members.contains(player) && !invitations.containsKey(player)) {
             invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
         }
     }
 
-    public void sendMessages(@NotNull String messages) {
+    public void sendMessages(String messages) {
         for (UUID player : members) {
             Objects.requireNonNull(Bukkit.getPlayer(player)).sendMessage(messages);
         }
