@@ -15,7 +15,7 @@ final class Team {
     private UUID leader;
     private Visibility visibility;
     private boolean encryption;
-    private byte[] password;
+    private String password;
     private boolean leaderInviteOnly;
     private ArrayList<UUID> members;
     private HashMap<UUID, Long> invitations;

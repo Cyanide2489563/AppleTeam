@@ -70,44 +70,44 @@ public class TeamManager {
         UUID leader;
         Visibility visibility;
         boolean encryption;
-        byte[] password;
+        String password;
         boolean leaderInviteOnly;
 
-        Builder setName(String name) {
+        public Builder setName(String name) {
             if (name == null) throw new NullPointerException();
             this.name = name;
             return this;
         }
 
-        Builder setLeader(UUID player) {
+        public Builder setLeader(UUID player) {
             if (player == null) throw new NullPointerException();
             this.leader = player;
             return this;
         }
 
-        Builder setlederInviteOnly() {
+        public Builder setlederInviteOnly() {
             this.leaderInviteOnly = true;
             return this;
         }
 
-        Builder setPublic() {
+        public Builder setPublic() {
             this.visibility = Visibility.Public;
             return this;
         }
 
-        Builder setPrivate() {
+        public Builder setPrivate() {
             this.visibility = Visibility.Private;
             return this;
         }
 
-        Builder setEncryption(byte[] password) {
+        public Builder setEncryption(String password) {
             if (password == null) throw new NullPointerException();
             this.encryption = true;
             this.password = password;
             return this;
         }
 
-        Team create() {
+        public Team create() {
             Team team = new Team(this);
             TeamManager.teams.add(team);
             return team;
