@@ -108,10 +108,12 @@ final class Team {
         return isMember(player);
     }
 
-    public void invite(UUID player) {
+    int invite(UUID player) {
         if (!members.contains(player) && !invitations.containsKey(player)) {
             invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
         }
+
+        return 100;
     }
 
     public void sendMessages(String messages) {

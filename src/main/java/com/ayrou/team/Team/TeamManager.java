@@ -1,9 +1,12 @@
 package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class TeamManager {
@@ -82,6 +85,21 @@ public final class TeamManager {
         }
     }
 
+    public void invitePlayer(UUID inviter,UUID player) {
+        Team team = getTeam(inviter);
+
+        if (team != null) {
+            int code = team.invite(player);
+
+            //Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage();
+        }
+        else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("");
+    }
+
+    public void joinTeam(UUID player) {
+
+    }
+
     private void getConfig() {
         FileConfiguration config = plugin.getConfig();
 
@@ -106,14 +124,6 @@ public final class TeamManager {
 
     long getInviteTimeout() {
         return inviteTimeout;
-    }
-
-    public void invitePlayer(UUID player) {
-
-    }
-
-    public void joinTeam(UUID player) {
-
     }
 
     public boolean removeTeam(Team team) {
