@@ -1,7 +1,13 @@
-# 隊伍最大人數
-maximum: 5
-# 邀請逾時時間
-inviteTimeout: 30
+#隊伍
+Team:
+  # 隊伍最大人數
+  maximum: 5
+  # 邀請逾時時間
+  inviteTimeout: 30
+  #組隊等級限制
+  Team_level_limit: true
+    #差距
+    Limit: 10
 # 權限
 Groups:
   Member:
