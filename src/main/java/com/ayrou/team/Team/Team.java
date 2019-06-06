@@ -95,9 +95,7 @@ final class Team {
     }
 
     public void sendMessages(String messages) {
-        for (UUID player : members) {
-            Objects.requireNonNull(Bukkit.getPlayer(player)).sendMessage(messages);
-        }
+        members.forEach(UUID -> Objects.requireNonNull(Bukkit.getPlayer(UUID)).sendMessage(messages));
     }
 
     void checkInvitations() {
