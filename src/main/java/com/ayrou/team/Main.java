@@ -25,7 +25,7 @@ public final class Main extends JavaPlugin {
         plugin = this;
         createData();
         message = new Message();
-        teamManager = new TeamManager();
+        teamManager = TeamManager.getInstance();
         CommandManager commandManager = new CommandManager();
         commandManager.setup();
         info(message.getMessage("Plugin_Initialize"));

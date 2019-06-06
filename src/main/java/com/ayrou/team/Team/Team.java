@@ -40,76 +40,54 @@ final class Team {
         if (this.application) this.reviewList = new HashMap<>();
     }
 
-    public String getTeamName() {
+    String getTeamName() {
         return name;
     }
 
-    public UUID getLeader() {
+    UUID getLeader() {
         return leader;
     }
 
-    public Visibility getVisibility() {
+    Visibility getVisibility() {
         return visibility;
     }
 
-    public boolean isEncryptionCanJoin() {
+    boolean isEncryptionCanJoin() {
         return encryption;
     }
 
-    public boolean isApplicationCanJoin() {
+    boolean isApplicationCanJoin() {
         return application;
     }
 
-    public boolean isFriendCanJoin() {
+    boolean isFriendCanJoin() {
         return friend;
     }
 
-    public boolean thisPlayerCanInvite(UUID player) {
+    boolean thisPlayerCanInvite(UUID player) {
         return player.equals(leader) | (isMember(player) & invite.equals(Invite.Member_Invite));
     }
 
-    public boolean isPasswordCorrect(String password) {
+    boolean isPasswordCorrect(String password) {
         return this.password.equals(password);
     }
 
-    public boolean isTeamFull() {
+    boolean isTeamFull() {
         return !(members.size() < teamManager.getMaximum());
     }
 
-    public boolean isMember(UUID player) {
+    boolean isMember(UUID player) {
         return members.contains(player);
     }
 
-    public int getTameSize() {
-        return members.size();
+    boolean isInvited(UUID player) {
+        return invitations.containsKey(player);
     }
 
-    void checkInvitations() {
-        for (Map.Entry<UUID, Long> invitation : invitations.entrySet()) {
-            if (isInviteTimeOut(invitation.getValue())) {
-                Objects.requireNonNull(Bukkit.getPlayer(invitation.getKey()))
-                        .sendMessage(message.getMessage("Team_Invite_TimeOut"));
-                invitations.remove(invitation.getKey());
-            }
-            if (isInvitePlayerJoined(invitation.getKey())) {
-                //TODO
-                Objects.requireNonNull(Bukkit.getPlayer(invitation.getKey()))
-                        .sendMessage(message.getMessage("Team_Invite_TimeOut"));
-                invitations.remove(invitation.getKey());
-            }
-        }
-    }
 
-    private boolean isInviteTimeOut(long time) {
-        return time < System.currentTimeMillis();
-    }
-
-    private boolean isInvitePlayerJoined(UUID player) {
-        return isMember(player);
-    }
 
     int invite(UUID player) {
-        if (!members.contains(player) && !invitations.containsKey(player)) {
+        if (isMember(player) && !isInvited(player)) {
             invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
         }
 
@@ -122,7 +100,27 @@ final class Team {
         }
     }
 
-    public enum ErrorCode {
+    void checkInvitations() {
+        invitations.forEach((UUID,Long) -> {
+            if (isInviteTimeOut(Long)) {
+                Objects.requireNonNull(Bukkit.getPlayer(UUID))
+                        .sendMessage(message.getMessage("Team_Invite_TimeOut"));
+                invitations.remove(UUID);
+            }
+            if (isInvitePlayerJoined(UUID)) {
+                //TODO
+                Objects.requireNonNull(Bukkit.getPlayer(UUID))
+                        .sendMessage(message.getMessage("Team_Invite_TimeOut"));
+                invitations.remove(UUID);
+            }
+        });
+    }
 
+    private boolean isInviteTimeOut(long time) {
+        return time < System.currentTimeMillis();
+    }
+
+    private boolean isInvitePlayerJoined(UUID player) {
+        return isMember(player);
     }
 }

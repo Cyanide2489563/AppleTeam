@@ -3,7 +3,6 @@ package com.ayrou.team.Team;
 import com.ayrou.team.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -11,14 +10,22 @@ import java.util.UUID;
 
 public final class TeamManager {
 
+    private static TeamManager teamManager;
     private Main plugin = Main.getInstance();
     private static ArrayList<Team> teams; //隊伍列表
     private int maximum; //隊伍人數上限
     private long inviteTimeout; //邀請失效時間
 
-    public TeamManager() {
+    private TeamManager() {
         teams = new ArrayList<>();
         getConfig();
+    }
+
+    public static TeamManager getInstance() {
+        if (teamManager == null) {
+            teamManager = new TeamManager();
+        }
+        return teamManager;
     }
 
     public static class Builder {
@@ -89,11 +96,21 @@ public final class TeamManager {
         Team team = getTeam(inviter);
 
         if (team != null) {
-            int code = team.invite(player);
+            if (!team.isTeamFull()) {
+                if (!inviter.equals(player)) {
+                    if (!hasTeam(player)) {
 
-            //Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage();
+                        int code = team.invite(player);
+
+                        //Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage();
+                    }
+                    else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("該玩家已有隊伍");
+                }
+                else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("你不能邀請自己");
+            }
+            else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("隊伍已滿");
         }
-        else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("");
+        else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("你沒有隊伍");
     }
 
     public void joinTeam(UUID player) {
