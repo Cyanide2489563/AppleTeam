@@ -92,25 +92,20 @@ public final class TeamManager {
         }
     }
 
-    public void invitePlayer(UUID inviter,UUID player) {
+    public String invitePlayer(UUID inviter,UUID player) {
+        if (Bukkit.getPlayer(player) == null) return "該玩家不存在";
+        if (inviter.equals(player)) return "你不能邀請自己";
+        if (hasTeam(player)) return "該玩家已有隊伍";
+
         Team team = getTeam(inviter);
+        if (team == null) return "你沒有隊伍";
+        if (team.isTeamFull()) return "隊伍已滿";
+        //TODO 判斷是否為黑名單成員
+        if (team.isInvited(player)) return "已邀請過該玩家";
+        if (team.isMember(player)) return "該玩家是隊伍成員";
+        if (team.invite(inviter, player)) return "邀請成功";
 
-        if (team != null) {
-            if (!team.isTeamFull()) {
-                if (!inviter.equals(player)) {
-                    if (!hasTeam(player)) {
-
-                        int code = team.invite(player);
-
-                        //Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage();
-                    }
-                    else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("該玩家已有隊伍");
-                }
-                else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("你不能邀請自己");
-            }
-            else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("隊伍已滿");
-        }
-        else Objects.requireNonNull(Bukkit.getPlayer(inviter)).sendMessage("你沒有隊伍");
+        return "邀請失敗";
     }
 
     public void joinTeam(UUID player) {

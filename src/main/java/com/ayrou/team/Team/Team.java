@@ -84,14 +84,18 @@ final class Team {
         return invitations.containsKey(player);
     }
 
+    boolean invite(UUID inviter,UUID player) {
+        String inviterName = Objects.requireNonNull(Bukkit.getPlayer(inviter)).getName();
+        String playerName = Objects.requireNonNull(Bukkit.getPlayer(player)).getName();
 
+        invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
+        sendMessages(inviterName + "已邀請玩家" + playerName);
 
-    int invite(UUID player) {
-        if (isMember(player) && !isInvited(player)) {
-            invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
-        }
+        return invitations.containsKey(player) & sendInvitations(player);
+    }
 
-        return 100;
+    private boolean sendInvitations(UUID player) {
+        return true;
     }
 
     public void sendMessages(String messages) {
