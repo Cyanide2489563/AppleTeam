@@ -4,20 +4,19 @@ import com.ayrou.team.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.HashMap;
 import java.util.UUID;
 
 public final class TeamManager {
 
     private static TeamManager teamManager;
     private Main plugin = Main.getInstance();
-    private static ArrayList<Team> teams; //隊伍列表
+    private static HashMap<String, Team> teams; //隊伍列表
     private int maximum; //隊伍人數上限
     private long inviteTimeout; //邀請失效時間
 
     private TeamManager() {
-        teams = new ArrayList<>();
+        teams = new HashMap<>();
         getConfig();
     }
 
@@ -87,7 +86,7 @@ public final class TeamManager {
 
         public Team create() {
             Team team = new Team(this);
-            TeamManager.teams.add(team);
+            TeamManager.teams.put(name, team);
             return team;
         }
     }
@@ -103,13 +102,34 @@ public final class TeamManager {
         //TODO 判斷是否為黑名單成員
         if (team.isInvited(player)) return "已邀請過該玩家";
         if (team.isMember(player)) return "該玩家是隊伍成員";
-        if (team.invite(inviter, player)) return "邀請成功";
+        if (!team.invite(inviter, player)) return "邀請失敗";
 
-        return "邀請失敗";
+        return "邀請成功";
     }
 
-    public void joinTeam(UUID player) {
+    public String joinTeam(String name, UUID player) {
+        if (hasTeam(player)) return "已有隊伍";
 
+        Team team = teams.get(name);
+        if (team == null) return "該隊伍不存在";
+        if (team.isTeamFull()) return "隊伍已滿";
+        if (team.isMember(player)) return "你已是隊伍成員";
+        if (team.isFriendCanJoin()) {
+
+        }
+        if (team.isEncryptionCanJoin()) {
+            if (!enterPassword()) return "";
+        }
+        if (team.isApplicationCanJoin()) {
+
+        }
+
+
+        return "加入成功";
+    }
+
+    private boolean enterPassword() {
+        return true;
     }
 
     private void getConfig() {
@@ -138,23 +158,23 @@ public final class TeamManager {
         return inviteTimeout;
     }
 
-    public boolean removeTeam(Team team) {
-        if (team == null) throw new NullPointerException();
-        teams.remove(team);
-        return !teams.contains(team);
+    public boolean removeTeam(String name) {
+        if (name == null) throw new NullPointerException();
+        teams.remove(name);
+        return teams.containsKey(name);
     }
 
     public boolean hasTeam(UUID player) {
         if (player == null) throw new NullPointerException();
-        return teams.stream().filter(team -> team.isMember(player)).findFirst().orElse(null) != null;
+        return teams.values().stream().filter(team -> team.isMember(player)).findFirst().orElse(null) != null;
     }
 
     public Team getTeam(UUID player) {
         if (player == null) throw new NullPointerException();
-        return teams.stream().filter(team -> team.isMember(player)).findFirst().orElse(null);
+        return teams.values().stream().filter(team -> team.isMember(player)).findFirst().orElse(null);
     }
 
     public void update() {
-        teams.forEach(Team::checkInvitations);
+        teams.forEach((String, Team) -> Team.checkInvitations());
     }
 }
