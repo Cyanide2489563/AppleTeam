@@ -115,9 +115,11 @@ public final class TeamManager {
 
         Team team = teams.get(name);
         if (team == null) return ChatColor.GREEN + "該隊伍不存在";
+        if (team.isTeamFull()) return ChatColor.GREEN + "隊伍已滿";
         if (!team.isInvited(player)) return ChatColor.GREEN + "你沒有被邀請";
         if (team.isMember(player)) return ChatColor.GREEN + "你已是該隊伍成員";
         if (hasTeam(player)) return ChatColor.GREEN + "已有隊伍";
+        if (!team.accept(player)) return ChatColor.GREEN + "加入失敗";
 
         return ChatColor.GREEN + "已成功加入" + ChatColor.YELLOW + name;
     }

@@ -107,6 +107,11 @@ final class Team {
         return invitations.containsKey(player) & sendInvitations(inviter_Player, player_Player);
     }
 
+    boolean accept(UUID player) {
+        members.add(player);
+        return members.contains(player);
+    }
+
     private boolean sendInvitations(Player inviter, Player player) {
         TextComponent up = new TextComponent("§a============================§r\n");
         TextComponent text = new TextComponent("隊伍：§6" + name + "§f已邀請你\n");
