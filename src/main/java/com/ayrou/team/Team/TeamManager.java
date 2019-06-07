@@ -135,18 +135,18 @@ public final class TeamManager {
     private void getConfig() {
         FileConfiguration config = plugin.getConfig();
 
-        if (config.getInt("maximum") > 1) {
-            maximum = config.getInt("maximum");
+        if (config.getInt("Team.maximum") > 1) {
+            maximum = config.getInt("Team.maximum");
         }
         else {
             maximum = 5;
         }
 
-        if (config.getLong("inviteTimeout") > 30) {
-            inviteTimeout = config.getLong("inviteTimeout")*1000;
+        if (config.getLong("Team.inviteTimeout") > 30) {
+            inviteTimeout = config.getLong("Team.inviteTimeout") * 1000;
         }
         else {
-            inviteTimeout = 30000;
+            inviteTimeout = 30;
         }
     }
 

@@ -72,5 +72,16 @@ public final class Main extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+
+        File configFile =  new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            try {
+                configFile.createNewFile();
+                InputStream inputStream = this.getClass().getResourceAsStream("/config.yml");
+                Files.copy(inputStream, Paths.get(getDataFolder() + "/config.yml"), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

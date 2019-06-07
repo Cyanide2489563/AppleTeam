@@ -1,5 +1,8 @@
 package com.ayrou.team.Commands;
 
+import com.ayrou.team.Commands.Command.Accept;
+import com.ayrou.team.Commands.Command.Cancel;
+import com.ayrou.team.Commands.Command.Invite;
 import com.ayrou.team.Commands.Command.Menu;
 import com.ayrou.team.Main;
 import com.ayrou.team.Message.Message;
@@ -23,6 +26,9 @@ public class CommandManager implements CommandExecutor {
         Objects.requireNonNull(plugin.getCommand(command)).setExecutor(this);
         Objects.requireNonNull(plugin.getCommand(command)).setTabCompleter(new CommandTabManager());
         this.commands.add(new Menu());
+        this.commands.add(new Invite());
+        this.commands.add(new Accept());
+        this.commands.add(new Cancel());
     }
 
     @Override

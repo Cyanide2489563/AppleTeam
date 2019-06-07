@@ -6,8 +6,8 @@ Team:
   inviteTimeout: 30
   #組隊等級限制
   Team_level_limit: true
-    #差距
-    Limit: 10
+  #差距
+  Limit: 10
 # 權限
 Groups:
   Member:
