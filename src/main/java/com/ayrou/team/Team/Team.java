@@ -2,7 +2,15 @@ package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
 import com.ayrou.team.Message.Message;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
+import net.minecraft.server.v1_13_R2.IChatBaseComponent;
+import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -65,10 +73,6 @@ final class Team {
         return friend;
     }
 
-    boolean thisPlayerCanInvite(UUID player) {
-        return player.equals(leader) | (isMember(player) & invite.equals(Invite.Member_Invite));
-    }
-
     boolean isPasswordCorrect(String password) {
         return this.password.equals(password);
     }
@@ -99,6 +103,29 @@ final class Team {
     }
 
     private boolean sendInvitations(Player inviter, Player player) {
+        TextComponent up = new TextComponent("§a============================§r\n");
+        TextComponent text = new TextComponent("隊伍：§6" + name + "§f已邀請你\n");
+        TextComponent text1 = new TextComponent("§2§n[接受邀請]");
+        text1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team accept"));
+        text1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("接受邀請").create()));
+
+        TextComponent space = new TextComponent("§r   ");
+
+        TextComponent text2 = new TextComponent("§4§n[拒絕邀請]\n");
+        text2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team cancel"));
+        text2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("拒絕邀請").create()));
+
+        TextComponent down = new TextComponent("§a============================§r");
+        up.addExtra(text);
+        up.addExtra(text1);
+        up.addExtra(space);
+        up.addExtra(text2);
+        up.addExtra(down);
+
+        IChatBaseComponent comp = IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(up));
+
+        PacketPlayOutChat packet = new PacketPlayOutChat(comp);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
         return true;
     }
 
