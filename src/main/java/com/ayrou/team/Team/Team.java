@@ -3,6 +3,7 @@ package com.ayrou.team.Team;
 import com.ayrou.team.Main;
 import com.ayrou.team.Message.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -85,16 +86,19 @@ final class Team {
     }
 
     boolean invite(UUID inviter,UUID player) {
-        String inviterName = Objects.requireNonNull(Bukkit.getPlayer(inviter)).getName();
-        String playerName = Objects.requireNonNull(Bukkit.getPlayer(player)).getName();
+        Player inviter_Player = Objects.requireNonNull(Bukkit.getPlayer(inviter));
+        Player player_Player = Objects.requireNonNull(Bukkit.getPlayer(player));
+
+        String inviterName = inviter_Player.getName();
+        String playerName = player_Player.getName();
 
         invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
         sendMessages(inviterName + "已邀請玩家" + playerName);
 
-        return invitations.containsKey(player) & sendInvitations(player);
+        return invitations.containsKey(player) & sendInvitations(inviter_Player, player_Player);
     }
 
-    private boolean sendInvitations(UUID player) {
+    private boolean sendInvitations(Player inviter, Player player) {
         return true;
     }
 
@@ -104,25 +108,17 @@ final class Team {
 
     void checkInvitations() {
         invitations.forEach((UUID,Long) -> {
-            if (isInviteTimeOut(Long)) {
+            if (Long < System.currentTimeMillis()) {
                 Objects.requireNonNull(Bukkit.getPlayer(UUID))
                         .sendMessage(message.getMessage("Team_Invite_TimeOut"));
                 invitations.remove(UUID);
             }
-            if (isInvitePlayerJoined(UUID)) {
+            if (isMember(UUID)) {
                 //TODO
                 Objects.requireNonNull(Bukkit.getPlayer(UUID))
                         .sendMessage(message.getMessage("Team_Invite_TimeOut"));
                 invitations.remove(UUID);
             }
         });
-    }
-
-    private boolean isInviteTimeOut(long time) {
-        return time < System.currentTimeMillis();
-    }
-
-    private boolean isInvitePlayerJoined(UUID player) {
-        return isMember(player);
     }
 }

@@ -114,6 +114,7 @@ public final class TeamManager {
         if (team == null) return "該隊伍不存在";
         if (team.isTeamFull()) return "隊伍已滿";
         if (team.isMember(player)) return "你已是隊伍成員";
+        //TODO 判斷是否為黑名單成員
         if (team.isFriendCanJoin()) {
 
         }
@@ -123,7 +124,6 @@ public final class TeamManager {
         if (team.isApplicationCanJoin()) {
 
         }
-
 
         return "加入成功";
     }
