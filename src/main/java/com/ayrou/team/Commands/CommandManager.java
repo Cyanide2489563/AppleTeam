@@ -33,6 +33,7 @@ public class CommandManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+
         if (!(sender instanceof Player)) {
             sender.sendMessage(message.getMessage("Team_Command_Invalid_Sender"));
             return true;

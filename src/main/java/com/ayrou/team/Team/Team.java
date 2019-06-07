@@ -89,6 +89,11 @@ final class Team {
         return invitations.containsKey(player);
     }
 
+    boolean isApplicationed(UUID player) {
+        if (!application) return false;
+        return reviewList.containsKey(player);
+    }
+
     boolean invite(UUID inviter,UUID player) {
         Player inviter_Player = Objects.requireNonNull(Bukkit.getPlayer(inviter));
         Player player_Player = Objects.requireNonNull(Bukkit.getPlayer(player));
@@ -106,13 +111,13 @@ final class Team {
         TextComponent up = new TextComponent("§a============================§r\n");
         TextComponent text = new TextComponent("隊伍：§6" + name + "§f已邀請你\n");
         TextComponent text1 = new TextComponent("§2§n[接受邀請]");
-        text1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team accept"));
+        text1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team accept " + name));
         text1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("接受邀請").create()));
 
         TextComponent space = new TextComponent("§r   ");
 
         TextComponent text2 = new TextComponent("§4§n[拒絕邀請]\n");
-        text2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team cancel"));
+        text2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/team cancel " + name));
         text2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("拒絕邀請").create()));
 
         TextComponent down = new TextComponent("§a============================§r");

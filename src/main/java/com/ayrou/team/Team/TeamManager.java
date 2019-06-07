@@ -1,6 +1,7 @@
 package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -92,22 +93,38 @@ public final class TeamManager {
     }
 
     public String invitePlayer(UUID inviter,UUID player) {
+        if (inviter == null | player == null) throw new NullPointerException();
+
         if (Bukkit.getPlayer(player) == null) return "該玩家不存在";
         if (inviter.equals(player)) return "你不能邀請自己";
-        if (hasTeam(player)) return "該玩家已有隊伍";
 
         Team team = getTeam(inviter);
-        if (team == null) return "你沒有隊伍";
-        if (team.isTeamFull()) return "隊伍已滿";
+        if (team == null) return ChatColor.GREEN + "你沒有隊伍";
+        if (team.isTeamFull()) return ChatColor.GREEN + "隊伍已滿";
         //TODO 判斷是否為黑名單成員
-        if (team.isInvited(player)) return "已邀請過該玩家";
-        if (team.isMember(player)) return "該玩家是隊伍成員";
-        if (!team.invite(inviter, player)) return "邀請失敗";
+        if (team.isInvited(player)) return ChatColor.GREEN + "已邀請過該玩家";
+        if (team.isMember(player)) return ChatColor.GREEN + "該玩家是隊伍成員";
+        if (hasTeam(player)) return ChatColor.GREEN + "該玩家已有隊伍";
+        if (!team.invite(inviter, player)) return ChatColor.GREEN + "邀請失敗";
 
-        return "邀請成功";
+        return ChatColor.GREEN + "已成功邀請" + ChatColor.YELLOW + Bukkit.getPlayer(player).getName();
+    }
+
+    public String acceptJoin(String name, UUID player) {
+        if (player == null) throw new NullPointerException();
+
+        Team team = teams.get(name);
+        if (team == null) return ChatColor.GREEN + "該隊伍不存在";
+        if (!team.isInvited(player)) return ChatColor.GREEN + "你沒有被邀請";
+        if (team.isMember(player)) return ChatColor.GREEN + "你已是該隊伍成員";
+        if (hasTeam(player)) return ChatColor.GREEN + "已有隊伍";
+
+        return ChatColor.GREEN + "已成功加入" + ChatColor.YELLOW + name;
     }
 
     public String joinTeam(String name, UUID player) {
+        if (name == null | player == null) throw new NullPointerException();
+
         if (hasTeam(player)) return "已有隊伍";
 
         Team team = teams.get(name);
