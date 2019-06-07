@@ -124,6 +124,18 @@ public final class TeamManager {
         return ChatColor.GREEN + "已成功加入" + ChatColor.YELLOW + name;
     }
 
+    public String cancelJoin(String name, UUID player) {
+        if (player == null) throw new NullPointerException();
+
+        Team team = teams.get(name);
+        if (team == null) return ChatColor.GREEN + "該隊伍不存在";
+        if (!team.isInvited(player)) return ChatColor.GREEN + "你沒有被邀請";
+        if (!team.cancel(player)) return ChatColor.GREEN + "拒絕隊伍邀請失敗";
+        if (team.isMember(player)) return ChatColor.GREEN + "你已是該隊伍成員";
+
+        return ChatColor.GREEN + "已拒絕隊伍邀請";
+    }
+
     public String joinTeam(String name, UUID player) {
         if (name == null | player == null) throw new NullPointerException();
 

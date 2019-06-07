@@ -1,28 +1,23 @@
 package com.ayrou.team.Commands.Command;
 
 import com.ayrou.team.Commands.SubCommand;
-
-import com.ayrou.team.Main;
-import org.bukkit.Bukkit;
+import com.ayrou.team.Team.TeamManager;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-import java.util.UUID;
-
-public class Invite extends SubCommand {
+public class Create extends SubCommand {
 
     @Override
     public void onCommand(Player player, String[] args) {
         if (args.length < 1) return;
 
-        UUID target = Objects.requireNonNull(Bukkit.getPlayer(args[1])).getUniqueId();
-        String status = Main.getTeamManager().invitePlayer(player.getUniqueId(), target);
-        player.sendMessage(status);
+        new TeamManager.Builder()
+                .setName(args[1])
+                .setLeader(player.getUniqueId());
     }
 
     @Override
     public String name() {
-        return "invite";
+        return "create";
     }
 
     @Override

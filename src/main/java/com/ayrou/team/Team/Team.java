@@ -109,6 +109,12 @@ final class Team {
 
     boolean accept(UUID player) {
         members.add(player);
+        invitations.remove(player);
+        return members.contains(player);
+    }
+
+    boolean cancel(UUID player) {
+        invitations.remove(player);
         return members.contains(player);
     }
 
