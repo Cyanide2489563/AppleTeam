@@ -169,21 +169,35 @@ final class Team {
         });
     }
 
-    void addMember(UUID player) {
+    private void addMember(UUID player) {
         members.add(player);
         setScoreBoard(player);
     }
 
-    void setScoreBoard(UUID player) {
+    private void setScoreBoard(UUID player) {
         Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
         Objective obj = board.registerNewObjective(name,"dummy",ChatColor.GREEN + "隊伍名稱" + ChatColor.YELLOW + name);
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        org.bukkit.scoreboard.Team teamScoreBoard = board.registerNewTeam("teamScoreBoard");
-        teamScoreBoard.addEntry("隊長：");
-        teamScoreBoard.setSuffix(Bukkit.getPlayer(leader).getName());
-        teamScoreBoard.setPrefix("");
-
-        obj.getScore("隊長：").setScore(0);
+        ArrayList<org.bukkit.scoreboard.Team> test = new ArrayList<>();
+        for (int i = 1, mum = teamManager.getMaximum(); i < mum; i++) {
+            String name;
+            String name2 = "沒有隊員";
+            if (i == 1) {
+                name  = "隊長：";
+                name2 = Objects.requireNonNull(Bukkit.getPlayer(leader)).getName();
+            }
+            else {
+                name = "隊員-" + i + ":";
+                if (members.get(i) != null) {
+                    name2 = Objects.requireNonNull(Bukkit.getPlayer(members.get(i))).getName();
+                }
+            }
+            test.add(i,board.registerNewTeam(name));
+            test.get(i).addEntry(name);
+            test.get(i).setSuffix(name2);
+            obj.getScore(name).setScore(mum - i);
+        }
+        Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
     }
 }
