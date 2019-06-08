@@ -189,14 +189,14 @@ final class Team {
             }
             else {
                 name = "隊員-" + i + ":";
-                if (members.get(i) != null) {
-                    name2 = Objects.requireNonNull(Bukkit.getPlayer(members.get(i))).getName();
+                if (members.get(i - 1) != null & members.get(i - 1) != leader) {
+                    name2 = Objects.requireNonNull(Bukkit.getPlayer(members.get(i - 1))).getName();
                 }
             }
-            test.add(i,board.registerNewTeam(name));
-            test.get(i).addEntry(name);
-            test.get(i).setSuffix(name2);
-            obj.getScore(name).setScore(mum - i);
+            test.add(i - 1,board.registerNewTeam(name));
+            test.get(i - 1).addEntry(name);
+            test.get(i - 1).setSuffix(name2);
+            obj.getScore(name).setScore(mum);
         }
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
     }
