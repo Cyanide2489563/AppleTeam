@@ -180,24 +180,59 @@ final class Team {
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         ArrayList<org.bukkit.scoreboard.Team> test = new ArrayList<>();
-        for (int i = 1, mum = teamManager.getMaximum(); i < mum; i++) {
+        for (int i = 1, mum = teamManager.getMaximum()+1; i < mum; i++) {
+            String name;
+            String data = ChatColor.YELLOW + "沒有隊員";
+            if (i == 1) {
+                name  = ChatColor.DARK_GREEN + "隊長-";
+                data = ChatColor.YELLOW + Objects.requireNonNull(Bukkit.getPlayer(leader)).getName();
+            }
+            else {
+                name = ChatColor.GREEN + "隊員-" + (i - 1) + ":";
+                if (members.size() > 1) {
+                    data = ChatColor.YELLOW + Objects.requireNonNull(Bukkit.getPlayer(members.get(i - 1))).getName();
+                }
+            }
+            if (members.size() > 1) {
+                if (!player.equals(members.get(i - 1))) {
+                   int distance = (int)Math.floor(Objects.requireNonNull(Bukkit.getPlayer(player)).getLocation()
+                           .distance(Objects.requireNonNull(Bukkit.getPlayer(members.get(i - 1))).getLocation()));
+
+                   data += ChatColor.WHITE + " " + distance;
+                }
+            }
+            test.add(i - 1,board.registerNewTeam(name));
+            test.get(i - 1).addEntry(name);
+            test.get(i - 1).setSuffix(data);
+            obj.getScore(name).setScore(mum - i);
+        }
+        Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
+    }
+
+    public void updata(Player player) {
+        Scoreboard board = player.getScoreboard();
+
+        ArrayList<org.bukkit.scoreboard.Team> test = new ArrayList<>();
+        for (int i = 1, mum = teamManager.getMaximum()+1; i < mum; i++) {
             String name;
             String name2 = "沒有隊員";
             if (i == 1) {
-                name  = "隊長：";
+                name  = "隊長-";
                 name2 = Objects.requireNonNull(Bukkit.getPlayer(leader)).getName();
             }
             else {
-                name = "隊員-" + i + ":";
-                if (members.get(i - 1) != null & members.get(i - 1) != leader) {
+                name = "隊員-" + (i - 1) + ":";
+                if (members.size() > 1) {
                     name2 = Objects.requireNonNull(Bukkit.getPlayer(members.get(i - 1))).getName();
                 }
             }
             test.add(i - 1,board.registerNewTeam(name));
             test.get(i - 1).addEntry(name);
             test.get(i - 1).setSuffix(name2);
-            obj.getScore(name).setScore(mum);
         }
-        Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
+    }
+
+    private void getDistance() {
+
     }
 }
