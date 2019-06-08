@@ -13,11 +13,12 @@ public class Invite extends SubCommand {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (args.length < 1) return;
-
-        UUID target = Objects.requireNonNull(Bukkit.getPlayer(args[1])).getUniqueId();
-        String status = Main.getTeamManager().invitePlayer(player.getUniqueId(), target);
-        player.sendMessage(status);
+        if (args.length > 1) {
+            UUID target = Objects.requireNonNull(Bukkit.getPlayer(args[1])).getUniqueId();
+            String status = Main.getTeamManager().invitePlayer(player.getUniqueId(), target);
+            player.sendMessage(status);
+        }
+        else player.sendMessage("請輸入玩家名稱");
     }
 
     @Override

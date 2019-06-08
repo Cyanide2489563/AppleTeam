@@ -7,10 +7,11 @@ import org.bukkit.entity.Player;
 public class Accept extends SubCommand {
     @Override
     public void onCommand(Player player, String[] args) {
-        if (args.length < 1) return;
-        String status = Main.getTeamManager().acceptJoin(args[1], player.getUniqueId());
-
-        player.sendMessage(status);
+        if (args.length > 1) {
+            String status = Main.getTeamManager().acceptJoin(args[1], player.getUniqueId());
+            player.sendMessage(status);
+        }
+        else player.sendMessage("錯誤");
     }
 
     @Override

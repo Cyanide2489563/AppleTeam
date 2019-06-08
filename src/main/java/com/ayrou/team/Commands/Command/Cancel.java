@@ -7,11 +7,12 @@ import org.bukkit.entity.Player;
 public class Cancel extends SubCommand {
     @Override
     public void onCommand(Player player, String[] args) {
-        if (args.length < 1) return;
+        if (args.length > 1) {
+            String status = Main.getTeamManager().cancelJoin(args[1], player.getUniqueId());
 
-        String status = Main.getTeamManager().cancelJoin(args[1], player.getUniqueId());
-
-        player.sendMessage(status);
+            player.sendMessage(status);
+        }
+        else player.sendMessage("錯誤");
     }
 
     @Override

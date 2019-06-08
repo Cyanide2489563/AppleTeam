@@ -2,6 +2,7 @@ package com.ayrou.team.Team;
 
 import com.ayrou.team.Main;
 import com.ayrou.team.Message.Message;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -12,6 +13,9 @@ import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
@@ -44,7 +48,7 @@ final class Team {
         this.invite = builder.invite;
         this.itemGet = builder.itemGet;
         this.members = new ArrayList<>();
-        this.members.add(leader);
+        addMember(leader);
         this.invitations = new HashMap<>();
         if (this.application) this.reviewList = new HashMap<>();
     }
@@ -165,5 +169,21 @@ final class Team {
         });
     }
 
+    void addMember(UUID player) {
+        members.add(player);
+        setScoreBoard(player);
+    }
 
+    void setScoreBoard(UUID player) {
+        Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
+        Objective obj = board.registerNewObjective(name,"dummy",ChatColor.GREEN + "隊伍名稱" + ChatColor.YELLOW + name);
+        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        org.bukkit.scoreboard.Team teamScoreBoard = board.registerNewTeam("teamScoreBoard");
+        teamScoreBoard.addEntry("隊長：");
+        teamScoreBoard.setSuffix(Bukkit.getPlayer(leader).getName());
+        teamScoreBoard.setPrefix("");
+
+        obj.getScore("隊長：").setScore(0);
+    }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CommandTabManager implements TabCompleter {
 
-    private static final List<String> COMMANDS = Arrays.asList("menu", "invite", "accept", "cancel");
+    private static final List<String> COMMANDS = Arrays.asList("menu", "create", "invite", "accept", "cancel");
     private static final List<String> BLANK = Arrays.asList("", "");
 
     @Override
