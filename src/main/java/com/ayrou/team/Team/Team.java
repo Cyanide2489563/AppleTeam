@@ -19,11 +19,10 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
-final class Team {
+public final class Team {
 
     private Message message = Main.getMessage();
     private TeamManager teamManager = Main.getTeamManager();
-
     private String name;
     private UUID leader;
     private Visibility visibility;
@@ -36,6 +35,7 @@ final class Team {
     private ArrayList<UUID> members;
     private HashMap<UUID, Long> invitations;
     private HashMap<UUID, Long> reviewList;
+    private HashMap<UUID, Long> disconnectionList;
 
     Team(TeamManager.Builder builder) {
         this.name = builder.name;
@@ -149,13 +149,13 @@ final class Team {
         return true;
     }
 
-    public void sendMessages(String messages) {
+    void sendMessages(String messages) {
         members.forEach(UUID -> Objects.requireNonNull(Bukkit.getPlayer(UUID)).sendMessage(messages));
     }
 
     void checkInvitations() {
         invitations.forEach((UUID,Long) -> {
-            if (Long < System.currentTimeMillis()) {
+            if (Long > System.currentTimeMillis()) {
                 Objects.requireNonNull(Bukkit.getPlayer(UUID))
                         .sendMessage(message.getMessage("Team_Invite_TimeOut"));
                 invitations.remove(UUID);
@@ -176,21 +176,21 @@ final class Team {
 
     private void setScoreBoard(UUID player) {
         Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
-        Objective obj = board.registerNewObjective(name,"dummy",ChatColor.GREEN + "隊伍名稱" + ChatColor.YELLOW + name);
+        Objective obj = board.registerNewObjective(name,"dummy",ChatColor.GREEN + "隊伍名稱" + ChatColor.GOLD + name);
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         ArrayList<org.bukkit.scoreboard.Team> test = new ArrayList<>();
         for (int i = 1, mum = teamManager.getMaximum()+1; i < mum; i++) {
             String name;
-            String data = ChatColor.YELLOW + "沒有隊員";
+            String data = ChatColor.BLUE + "沒有隊員";
             if (i == 1) {
-                name  = ChatColor.DARK_GREEN + "隊長-";
+                name  = ChatColor.GREEN + "隊長-";
                 data = ChatColor.YELLOW + Objects.requireNonNull(Bukkit.getPlayer(leader)).getName();
             }
             else {
                 name = ChatColor.GREEN + "隊員-" + (i - 1) + ":";
                 if (members.size() > 1) {
-                    data = ChatColor.YELLOW + Objects.requireNonNull(Bukkit.getPlayer(members.get(i - 1))).getName();
+                    data = ChatColor.BLUE + Objects.requireNonNull(Bukkit.getPlayer(members.get(i - 1))).getName();
                 }
             }
             if (members.size() > 1) {
@@ -207,9 +207,14 @@ final class Team {
             obj.getScore(name).setScore(mum - i);
         }
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
+
+        Objective test1 = board.registerNewObjective("頭頂資訊欄","health","");
+        test1.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        test1.setDisplayName("/ 20");
+        Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
     }
 
-    public void updata(Player player) {
+    void updataScoreBoard(Player player) {
         Scoreboard board = player.getScoreboard();
 
         ArrayList<org.bukkit.scoreboard.Team> test = new ArrayList<>();
@@ -230,6 +235,28 @@ final class Team {
             test.get(i - 1).addEntry(name);
             test.get(i - 1).setSuffix(name2);
         }
+    }
+
+    boolean isDisconnectionTimeOut(UUID player) {
+        if (disconnectionList.containsKey(player)) {
+            return disconnectionList.get(player) > System.currentTimeMillis();
+        }
+        return true;
+    }
+
+    public String reConnection(UUID player) {
+        if (isDisconnectionTimeOut(player)) return "你已超過重新連回隊伍時間，已被自動移出隊伍";
+        addMember(player);
+        disconnectionList.remove(player);
+
+        return "已重新連線回隊伍";
+    }
+
+    public void disconnection(UUID player) {
+        members.remove(player);
+        disconnectionList.put(player, teamManager.getDisconnectionTimeout() + System.currentTimeMillis());
+        sendMessages(Objects.requireNonNull(Bukkit.getPlayer(player)).getName() +
+                "離線保留空位" + teamManager.getDisconnectionTimeout() + "分鐘");
     }
 
     private void getDistance() {

@@ -4,6 +4,8 @@ Team:
   maximum: 5
   # 邀請逾時時間
   inviteTimeout: 30
+  # 斷線逾期時間
+  DisconnectionTimeout: 180
   #組隊等級限制
   Team_level_limit: true
   #差距

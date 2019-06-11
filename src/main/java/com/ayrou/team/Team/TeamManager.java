@@ -14,7 +14,8 @@ public final class TeamManager {
     private Main plugin = Main.getInstance();
     private static HashMap<String, Team> teams; //隊伍列表
     private int maximum; //隊伍人數上限
-    private long inviteTimeout; //邀請失效時間
+    private int inviteTimeout; //邀請失效時間
+    private int disconnectionTimeout; //斷線逾期時間
 
     private TeamManager() {
         teams = new HashMap<>();
@@ -174,19 +175,26 @@ public final class TeamManager {
         }
 
         if (config.getLong("Team.inviteTimeout") > 30) {
-            inviteTimeout = config.getLong("Team.inviteTimeout") * 1000;
+            inviteTimeout = config.getInt("Team.inviteTimeout") * 1000;
         }
         else {
-            inviteTimeout = 30;
+            inviteTimeout = 3000;
         }
+        if (config.getInt("Team.DisconnectionTimeout") > 180)
+            disconnectionTimeout = config.getInt("Team.DisconnectionTimeout") * 1000;
+        else disconnectionTimeout = 180000;
     }
 
     int getMaximum() {
         return maximum;
     }
 
-    long getInviteTimeout() {
+    int getInviteTimeout() {
         return inviteTimeout;
+    }
+
+    int getDisconnectionTimeout() {
+        return disconnectionTimeout;
     }
 
     public boolean removeTeam(String name) {
