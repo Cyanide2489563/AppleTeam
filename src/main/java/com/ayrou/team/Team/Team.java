@@ -57,10 +57,6 @@ public final class Team {
         return name;
     }
 
-    UUID getLeader() {
-        return leader;
-    }
-
     Visibility getVisibility() {
         return visibility;
     }
@@ -79,6 +75,10 @@ public final class Team {
 
     boolean isPasswordCorrect(String password) {
         return this.password.equals(password);
+    }
+
+    boolean isLeader(UUID player) {
+        return player.equals(leader);
     }
 
     boolean isTeamFull() {
@@ -165,6 +165,14 @@ public final class Team {
                 Objects.requireNonNull(Bukkit.getPlayer(UUID))
                         .sendMessage(message.getMessage("Team_Invite_TimeOut"));
                 invitations.remove(UUID);
+            }
+        });
+    }
+
+    void checkDisconnectionList() {
+        disconnectionList.forEach((UUID,Long) -> {
+            if (Long > System.currentTimeMillis()) {
+                disconnectionList.remove(UUID);
             }
         });
     }

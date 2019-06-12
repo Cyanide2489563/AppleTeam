@@ -160,6 +160,14 @@ public final class TeamManager {
         return "加入成功";
     }
 
+    public String disbandTeam(UUID player) {
+        Team team = getTeam(player);
+        if (team == null) return "你沒有隊伍";
+        if (!team.isLeader(player)) return "你沒有權限";
+        //TODO 確認是否解散隊伍
+        return "已成功解散隊伍";
+    }
+
     private boolean enterPassword() {
         return true;
     }
@@ -214,6 +222,9 @@ public final class TeamManager {
     }
 
     public void update() {
-        teams.forEach((String, Team) -> Team.checkInvitations());
+        teams.forEach((String, Team) -> {
+            Team.checkInvitations();
+            Team.checkDisconnectionList();
+        });
     }
 }
