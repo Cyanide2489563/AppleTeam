@@ -2,16 +2,13 @@ package com.ayrou.team.Commands.Command;
 
 import com.ayrou.team.Commands.SubCommand;
 import com.ayrou.team.Main;
-import com.ayrou.team.Team.Team;
 import org.bukkit.entity.Player;
 
 public class Disband extends SubCommand {
+
     @Override
     public void onCommand(Player player, String[] args) {
-        Team team = Main.getTeamManager().getTeam(player.getUniqueId());
-        if (team != null) {
-
-        }
+        player.sendMessage(Main.getTeamManager().disbandTeam(player.getUniqueId()));
     }
 
     @Override

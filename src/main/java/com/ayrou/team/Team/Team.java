@@ -149,7 +149,7 @@ public final class Team {
         return true;
     }
 
-    void sendMessages(String messages) {
+    private void sendMessages(String messages) {
         members.forEach(UUID -> Objects.requireNonNull(Bukkit.getPlayer(UUID)).sendMessage(messages));
     }
 

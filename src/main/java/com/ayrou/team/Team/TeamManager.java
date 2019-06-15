@@ -86,10 +86,9 @@ public final class TeamManager {
             return this;
         }
 
-        public Team create() {
+        public void create() {
             Team team = new Team(this);
             TeamManager.teams.put(name, team);
-            return team;
         }
     }
 
@@ -165,6 +164,7 @@ public final class TeamManager {
         if (team == null) return "你沒有隊伍";
         if (!team.isLeader(player)) return "你沒有權限";
         //TODO 確認是否解散隊伍
+
         return "已成功解散隊伍";
     }
 

@@ -27,6 +27,7 @@ public class CommandManager implements CommandExecutor {
         this.commands.add(new Invite());
         this.commands.add(new Accept());
         this.commands.add(new Cancel());
+        this.commands.add(new Disband());
     }
 
     @Override

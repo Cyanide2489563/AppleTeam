@@ -19,7 +19,6 @@ public class Create extends SubCommand {
             else player.sendMessage("你已有隊伍");
         }
         else player.sendMessage("請輸入隊伍名稱");
-
     }
 
     @Override
