@@ -2,7 +2,7 @@ package com.Ayrou.AppleTeam.Commands.Command;
 
 import com.Ayrou.AppleTeam.Commands.SubCommand;
 import com.Ayrou.AppleTeam.Main;
-import com.ayrou.team.Team.TeamManager;
+import com.Ayrou.AppleTeam.Team.TeamManager;
 import org.bukkit.entity.Player;
 
 public class Create extends SubCommand {

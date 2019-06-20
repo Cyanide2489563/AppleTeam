@@ -188,32 +188,36 @@ public final class Team {
         Objective obj = board.registerNewObjective(name,"dummy",ChatColor.GREEN + "隊伍名稱" + ChatColor.GOLD + name);
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        ArrayList<org.bukkit.scoreboard.Team> test = new ArrayList<>();
-        for (int i = 0, mum = teamManager.getMaximum(); i < mum; i++) {
-            String name;
-            String data = ChatColor.DARK_BLUE + "沒有隊員";
-            if (i == 0) {
-                name  = ChatColor.GREEN + "隊長-";
-                data = ChatColor.YELLOW + Objects.requireNonNull(Bukkit.getPlayer(leader)).getName();
-            }
-            else {
-                name = ChatColor.GREEN + "隊員-";
-                if (members.size() > 1) {
-                    data = ChatColor.DARK_BLUE + Objects.requireNonNull(Bukkit.getPlayer(members.get(i))).getName();
-                }
-            }
-            if (members.size() > 1) {
-                if (!player.equals(members.get(i))) {
-                   int distance = (int)Math.floor(Objects.requireNonNull(Bukkit.getPlayer(player)).getLocation()
-                           .distance(Objects.requireNonNull(Bukkit.getPlayer(members.get(i))).getLocation()));
+        ArrayList<org.bukkit.scoreboard.Team> scoreTeam = new ArrayList<>();
+        for (int i = 0, num = teamManager.getMaximum(); i < num; i++) {
+            String entryName = String.valueOf(ChatColor.GREEN);
+            String playerName = "沒有隊員";
+            String distance = "";
+            UUID member;
 
-                   data += ChatColor.WHITE + " " + distance;
+            if (members.size() > i) {
+                member = members.get(i);
+
+                if (!member.equals(player)) {
+                    Player player1 = Objects.requireNonNull(Bukkit.getPlayer(member));
+                    Player player2 = Objects.requireNonNull(Bukkit.getPlayer(player));
+                    distance = String.valueOf((int)Math.floor(player1.getLocation().distance(player2.getLocation())));
+                }
+                if (member.equals(leader)) {
+                    entryName  += "隊長-";
+                    playerName = Objects.requireNonNull(Bukkit.getPlayer(member)).getName();
+                }
+                else {
+                    entryName += "隊員-";
+                    playerName = Objects.requireNonNull(Bukkit.getPlayer(member)).getName();
                 }
             }
-            test.add(i ,board.registerNewTeam(String.valueOf(i)));
-            test.get(i).addEntry(name);
-            test.get(i).setSuffix(data);
-            obj.getScore(name).setScore(mum - i);
+            String data = ChatColor.DARK_BLUE + playerName + ChatColor.WHITE + distance;
+
+            scoreTeam.add(i, board.registerNewTeam(""));
+            scoreTeam.get(i).addEntry(name);
+            scoreTeam.get(i).setSuffix(data);
+            obj.getScore(name).setScore(num - i);
         }
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
     }

@@ -1,9 +1,8 @@
 name: AppleTeam
 version: 0.0.1
-main: com.ayrou.team.Main
+main: com.Ayrou.AppleTeam.Main
 api-version: 1.13
 authors: [apple14789]
 description: teamPlugin
-depend: [SmartInvs]
 commands:
   team:
