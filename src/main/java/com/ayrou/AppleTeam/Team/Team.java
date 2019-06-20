@@ -13,6 +13,7 @@ import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -60,6 +61,10 @@ public final class Team {
 
     Visibility getVisibility() {
         return visibility;
+    }
+
+    int getMemberSize() {
+        return members.size();
     }
 
     boolean isEncryptionCanJoin() {
@@ -114,6 +119,7 @@ public final class Team {
 
     boolean accept(UUID player) {
         members.add(player);
+        setScoreBoard(player);
         invitations.remove(player);
         return members.contains(player);
     }
@@ -155,19 +161,20 @@ public final class Team {
     }
 
     void checkInvitations() {
-        invitations.forEach((UUID,Long) -> {
-            if (Long > System.currentTimeMillis()) {
-                Objects.requireNonNull(Bukkit.getPlayer(UUID))
+        for (Iterator<Map.Entry<UUID, Long>> it = invitations.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<UUID, Long> item = it.next();
+            if (item.getValue() < System.currentTimeMillis()) {
+                Objects.requireNonNull(Bukkit.getPlayer(item.getKey()))
                         .sendMessage(message.getMessage("Team_Invite_TimeOut"));
-                invitations.remove(UUID);
+                it.remove();
             }
-            if (isMember(UUID)) {
+            if (isMember(item.getKey())) {
                 //TODO
-                Objects.requireNonNull(Bukkit.getPlayer(UUID))
+                Objects.requireNonNull(Bukkit.getPlayer(item.getKey()))
                         .sendMessage(message.getMessage("Team_Invite_TimeOut"));
-                invitations.remove(UUID);
+                it.remove();
             }
-        });
+        }
     }
 
     void checkDisconnectionList() {
@@ -185,14 +192,15 @@ public final class Team {
 
     private void setScoreBoard(UUID player) {
         Scoreboard board = Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard();
-        Objective obj = board.registerNewObjective(name,"dummy",ChatColor.GREEN + "隊伍名稱" + ChatColor.GOLD + name);
+        Objective obj = board.registerNewObjective(name,"dummy",ChatColor.GREEN + "隊伍名稱：" + ChatColor.GOLD + name);
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         ArrayList<org.bukkit.scoreboard.Team> scoreTeam = new ArrayList<>();
         for (int i = 0, num = teamManager.getMaximum(); i < num; i++) {
             String entryName = String.valueOf(ChatColor.GREEN);
+            ChatColor color = ChatColor.GRAY;
             String playerName = "沒有隊員";
-            String distance = "";
+            String distance = " ";
             UUID member;
 
             if (members.size() > i) {
@@ -201,53 +209,60 @@ public final class Team {
                 if (!member.equals(player)) {
                     Player player1 = Objects.requireNonNull(Bukkit.getPlayer(member));
                     Player player2 = Objects.requireNonNull(Bukkit.getPlayer(player));
-                    distance = String.valueOf((int)Math.floor(player1.getLocation().distance(player2.getLocation())));
+                    distance += String.valueOf((int)Math.floor(player1.getLocation().distance(player2.getLocation())));
                 }
                 if (member.equals(leader)) {
+                    color = ChatColor.YELLOW;
                     entryName  += "隊長-";
                     playerName = Objects.requireNonNull(Bukkit.getPlayer(member)).getName();
                 }
                 else {
-                    entryName += "隊員-";
+                    color = ChatColor.BLUE;
+                    entryName += "隊員"+ i;
                     playerName = Objects.requireNonNull(Bukkit.getPlayer(member)).getName();
                 }
             }
-            String data = ChatColor.DARK_BLUE + playerName + ChatColor.WHITE + distance;
+            else entryName += "隊員" + i;
+            String data = color + playerName + ChatColor.WHITE + distance;
 
-            scoreTeam.add(i, board.registerNewTeam(""));
-            scoreTeam.get(i).addEntry(name);
+            scoreTeam.add(i, board.registerNewTeam(String.valueOf(i)));
+            scoreTeam.get(i).addEntry(entryName);
             scoreTeam.get(i).setSuffix(data);
-            obj.getScore(name).setScore(num - i);
+            obj.getScore(entryName).setScore(num - i);
         }
         Objects.requireNonNull(Bukkit.getPlayer(player)).setScoreboard(board);
     }
 
-    void updataScoreBoard(UUID player) {
-        Scoreboard board = Objects.requireNonNull(Bukkit.getPlayer(player)).getScoreboard();
-
+    void updateScoreBoard() {
         for (UUID member : members) {
-            String memberName = Objects.requireNonNull(Bukkit.getPlayer(member)).getName();
+            Player player = Objects.requireNonNull(Bukkit.getPlayer(member));
+            Scoreboard boardTeam = player.getScoreboard();
 
+            for (int i = 0, num = teamManager.getMaximum(); i < num; i++) {
+                ChatColor color = ChatColor.GRAY;
+                String playerName = "沒有隊員";
+                String distance = " ";
+                UUID member1;
 
-        }
+                if (members.size() > i) {
+                    member1 = members.get(i);
 
-        ArrayList<org.bukkit.scoreboard.Team> test = new ArrayList<>();
-        for (int i = 1, mum = teamManager.getMaximum() + 1; i < mum; i++) {
-            String name;
-            String name2 = "沒有隊員";
-            if (i == 1) {
-                name  = "隊長-";
-                name2 = Objects.requireNonNull(Bukkit.getPlayer(leader)).getName();
-            }
-            else {
-                name = "隊員-" + (i - 1) + ":";
-                if (members.size() > 1) {
-                    name2 = Objects.requireNonNull(Bukkit.getPlayer(members.get(i - 1))).getName();
+                    if (!member1.equals(member)) {
+                        Player player1 = Objects.requireNonNull(Bukkit.getPlayer(member1));
+                        distance += String.valueOf((int)Math.floor(player1.getLocation().distance(player.getLocation())));
+                    }
+                    if (member.equals(leader)) {
+                        color = ChatColor.YELLOW;
+                        playerName = Objects.requireNonNull(Bukkit.getPlayer(member1)).getName();
+                    }
+                    else {
+                        color = ChatColor.BLUE;
+                        playerName = Objects.requireNonNull(Bukkit.getPlayer(member1)).getName();
+                    }
                 }
+                String data = color + playerName + ChatColor.WHITE + distance;
+                if (boardTeam.getTeam(String.valueOf(i)) != null) boardTeam.getTeam(String.valueOf(i)).setSuffix(data);
             }
-            test.add(i - 1,board.registerNewTeam(name));
-            test.get(i - 1).addEntry(name);
-            test.get(i - 1).setSuffix(name2);
         }
     }
 
@@ -260,9 +275,9 @@ public final class Team {
 
     public String reConnection(UUID player) {
         if (isDisconnectionTimeOut(player)) return "你已超過重新連回隊伍時間，已被自動移出隊伍";
+        setScoreBoard(player);
         addMember(player);
         disconnectionList.remove(player);
-
         return "已重新連線回隊伍";
     }
 
@@ -271,9 +286,5 @@ public final class Team {
         disconnectionList.put(player, teamManager.getDisconnectionTimeout() + System.currentTimeMillis());
         sendMessages(Objects.requireNonNull(Bukkit.getPlayer(player)).getName() +
                 "離線保留空位" + teamManager.getDisconnectionTimeout() + "分鐘");
-    }
-
-    private void getDistance() {
-
     }
 }

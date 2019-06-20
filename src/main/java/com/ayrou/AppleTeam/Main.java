@@ -3,7 +3,7 @@ package com.Ayrou.AppleTeam;
 import com.Ayrou.AppleTeam.Commands.CommandManager;
 import com.Ayrou.AppleTeam.Message.Message;
 import com.Ayrou.AppleTeam.Team.TeamManager;
-import com.Ayrou.AppleTeam.Utility.UpdataTask;
+import com.Ayrou.AppleTeam.Utility.UpdateTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,7 +29,7 @@ public final class Main extends JavaPlugin {
         CommandManager commandManager = new CommandManager();
         commandManager.setup();
         info(message.getMessage("Plugin_Initialize"));
-        new UpdataTask(plugin,teamManager);
+        new UpdateTask(plugin,teamManager);
     }
 
     @Override

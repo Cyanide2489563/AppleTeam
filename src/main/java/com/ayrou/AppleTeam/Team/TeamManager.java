@@ -4,6 +4,7 @@ import com.Ayrou.AppleTeam.Main;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -182,11 +183,11 @@ public final class TeamManager {
             maximum = 5;
         }
 
-        if (config.getLong("Team.inviteTimeout") > 30) {
+        if (config.getLong("Team.inviteTimeout") >= 30) {
             inviteTimeout = config.getInt("Team.inviteTimeout") * 1000;
         }
         else {
-            inviteTimeout = 3000;
+            inviteTimeout = 30000;
         }
         if (config.getInt("Team.DisconnectionTimeout") > 180)
             disconnectionTimeout = config.getInt("Team.DisconnectionTimeout") * 1000;
@@ -222,9 +223,15 @@ public final class TeamManager {
     }
 
     public void update() {
-        teams.forEach((String, Team) -> {
-            Team.checkInvitations();
-            Team.checkDisconnectionList();
-        });
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                teams.forEach((String, Team) -> {
+                    Team.checkInvitations();
+                    Team.checkDisconnectionList();
+                    Team.updateScoreBoard();
+                });
+            }
+        }.runTaskTimer(plugin, 1, 1);
     }
 }
