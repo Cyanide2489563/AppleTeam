@@ -66,6 +66,14 @@ public final class Team {
         return members.size();
     }
 
+    public ArrayList<String> getTeamMemberName() {
+        ArrayList<String> memberName = new ArrayList<>();
+        for (UUID member : members) {
+            memberName.add(Bukkit.getPlayer(member).getName());
+        }
+        return memberName;
+    }
+
     boolean isEncryptionCanJoin() {
         return encryption;
     }
@@ -153,6 +161,34 @@ public final class Team {
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
 
+    public String leave(UUID player) {
+        removeMember(player);
+        return ChatColor.GREEN + "已成功離開隊伍" + ChatColor.GOLD + name;
+    }
+
+    boolean kick(UUID member) {
+        removeMember(member);
+        Player player = Bukkit.getPlayer(member);
+        if (player != null) {
+            player.sendMessage(ChatColor.GREEN + "你已被隊伍" + ChatColor.GOLD + name + ChatColor.GREEN + "踢出");
+            sendMessages(ChatColor.GREEN + "以踢除成員" + ChatColor.YELLOW + player.getName());
+        }
+        else {
+            String name = Bukkit.getOfflinePlayer(member).getName();
+            sendMessages(ChatColor.GREEN + "以踢除成員" + ChatColor.YELLOW + name);
+        }
+        return true;
+    }
+
+    void disband() {
+        invitations.clear();
+        if (reviewList != null) reviewList.clear();
+        disconnectionList.clear();
+        for (UUID member : members) clearScoreBoard(member);
+        sendMessages("隊伍已解散");
+        members.clear();
+    }
+
     private void sendMessages(String messages) {
         members.forEach(UUID -> Objects.requireNonNull(Bukkit.getPlayer(UUID)).sendMessage(messages));
     }
@@ -177,6 +213,11 @@ public final class Team {
     private void addMember(UUID player) {
         members.add(player);
         setScoreBoard(player);
+    }
+
+    private void removeMember(UUID player) {
+        members.remove(player);
+        clearScoreBoard(player);
     }
 
     private void setScoreBoard(UUID player) {
@@ -267,6 +308,13 @@ public final class Team {
         }
     }
 
+    private void clearScoreBoard(UUID member) {
+        Player player = Bukkit.getPlayer(member);
+        if (player != null) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        }
+    }
+
     private boolean isDisconnectionTimeOut(UUID player) {
         if (disconnectionList.containsKey(player)) {
             return disconnectionList.get(player) < System.currentTimeMillis();
@@ -281,7 +329,7 @@ public final class Team {
     public String reConnection(UUID player) {
         if (isDisconnectionTimeOut(player)) {
             disconnectionList.remove(player);
-            return "你已超過重新連回隊伍時間，已被自動移出隊伍";
+            return "你已超過重新連線時間，已被自動移出隊伍";
         }
         setScoreBoard(player);
         addMember(player);

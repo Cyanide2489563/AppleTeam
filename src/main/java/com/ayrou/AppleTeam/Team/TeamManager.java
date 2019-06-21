@@ -93,10 +93,8 @@ public final class TeamManager {
     }
 
     public String invitePlayer(UUID inviter,UUID player) {
-        if (inviter == null | player == null) throw new NullPointerException();
-
-        if (Bukkit.getPlayer(player) == null) return "該玩家不存在";
-        if (inviter.equals(player)) return "你不能邀請自己";
+        if (Bukkit.getPlayer(player) == null) return ChatColor.GREEN + "該玩家不存在";
+        if (inviter.equals(player)) return ChatColor.GREEN + "你不能邀請自己";
 
         Team team = getTeam(inviter);
         if (team == null) return ChatColor.GREEN + "你沒有隊伍";
@@ -111,8 +109,6 @@ public final class TeamManager {
     }
 
     public String acceptJoin(String name, UUID player) {
-        if (player == null) throw new NullPointerException();
-
         Team team = teams.get(name);
         if (team == null) return ChatColor.GREEN + "該隊伍不存在";
         if (team.isTeamFull()) return ChatColor.GREEN + "隊伍已滿";
@@ -125,8 +121,6 @@ public final class TeamManager {
     }
 
     public String cancelJoin(String name, UUID player) {
-        if (player == null) throw new NullPointerException();
-
         Team team = teams.get(name);
         if (team == null) return ChatColor.GREEN + "該隊伍不存在";
         if (!team.isInvited(player)) return ChatColor.GREEN + "你沒有被邀請";
@@ -137,8 +131,6 @@ public final class TeamManager {
     }
 
     public String joinTeam(String name, UUID player) {
-        if (name == null | player == null) throw new NullPointerException();
-
         if (hasTeam(player)) return "已有隊伍";
 
         Team team = teams.get(name);
@@ -156,16 +148,28 @@ public final class TeamManager {
 
         }
 
-        return "加入成功";
+        return ChatColor.GREEN + "加入成功";
     }
 
     public String disbandTeam(UUID player) {
         Team team = getTeam(player);
-        if (team == null) return "你沒有隊伍";
-        if (!team.isLeader(player)) return "你沒有權限";
-        //TODO 確認是否解散隊伍
+        if (team == null) return ChatColor.GREEN + "你沒有隊伍";
+        if (!team.isLeader(player)) return ChatColor.GREEN + "僅隊長能解散隊伍";
+        team.disband();
+        removeTeam(team.getTeamName());
+        return ChatColor.GREEN + "已成功解散隊伍";
+    }
 
-        return "已成功解散隊伍";
+    public String kickMember(UUID player, UUID member) {
+        Team team = getTeam(player);
+        if (team == null) return ChatColor.GREEN + "你沒有隊伍";
+        if (!team.isLeader(player)) return ChatColor.GREEN + "僅隊長能踢除隊伍成員";
+        if (!team.isMember(member)) return ChatColor.GREEN + "該名玩家不是隊伍成員";
+        if (player.equals(member)) return ChatColor.GREEN + "你不能踢除自己";
+        if (team.isLeader(member)) return ChatColor.GREEN + "你不能踢除隊長";
+        if (!team.kick(member)) return ChatColor.GREEN + "踢除玩家失敗";
+
+        return ChatColor.GREEN + "已成功剔除玩家" + ChatColor.YELLOW + Bukkit.getPlayer(member).getName();
     }
 
     private boolean enterPassword() {
@@ -205,10 +209,16 @@ public final class TeamManager {
         return disconnectionTimeout;
     }
 
-    public boolean removeTeam(String name) {
+    private boolean removeTeam(String name) {
         if (name == null) throw new NullPointerException();
         teams.remove(name);
         return teams.containsKey(name);
+    }
+
+    private boolean removeTeam(Team team) {
+        if (team == null) throw new NullPointerException();
+        teams.remove(team.getTeamName());
+        return teams.containsKey(team.getTeamName());
     }
 
     public boolean hasTeam(UUID player) {
