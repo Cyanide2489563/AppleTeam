@@ -17,6 +17,5 @@ public class Connection implements Listener {
             String status = team.reConnection(player.getUniqueId());
             event.getPlayer().sendMessage(status);
         }
-        else event.getPlayer().sendMessage("error");
     }
 }

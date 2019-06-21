@@ -1,5 +1,7 @@
 package com.Ayrou.AppleTeam.Commands;
 
+import com.Ayrou.AppleTeam.Team.Team;
+import com.Ayrou.AppleTeam.Team.TeamManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,22 +15,37 @@ import java.util.List;
 
 public class CommandTabManager implements TabCompleter {
 
-    private static final List<String> COMMANDS = Arrays.asList("menu", "create", "invite");
+    private static final List<String> COMMANDS = Arrays.asList("menu", "invite", "leave", "kick");
     private static final List<String> BLANK = Arrays.asList("", "");
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args[0].equalsIgnoreCase("invite") || args[0].equalsIgnoreCase("kick")) {
-            if(args.length > 2) {
-                return BLANK;
+        if (sender instanceof Player) {
+            Player player = ((Player) sender).getPlayer();
+            Team team = TeamManager.getInstance().getTeam(player);
+            if (team != null) {
+                if (args[0].equalsIgnoreCase("invite")) {
+                    if (args.length > 2) return BLANK;
+                    List<String> PLAYERLIST = new ArrayList<>();
+                    for(Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+                        PLAYERLIST.add(player1.getName());
+                    }
+                    return StringUtil.copyPartialMatches(args[0], PLAYERLIST, PLAYERLIST);
+                }
+                if (args[0].equalsIgnoreCase("kick")) {
+                    if (args.length > 2) return BLANK;
+                    return team.getTeamMemberName();
+                }
+                return StringUtil.copyPartialMatches(args[0], COMMANDS, new ArrayList<>());
             }
-            List<String> PLAYERLIST = new ArrayList<>();
-            for(Player player : Bukkit.getServer().getOnlinePlayers()){
-                PLAYERLIST.add(player.getName());
+            else {
+                if (args.length >= 2) return BLANK;
+                List<String> COMMAND = new ArrayList<>();
+                COMMAND.add("create");
+                COMMAND.add("menu");
+                return StringUtil.copyPartialMatches(args[0], COMMAND, new ArrayList<>());
             }
-            return StringUtil.copyPartialMatches(args[0], PLAYERLIST, PLAYERLIST);
         }
-        if (args.length >= 2) return BLANK;
-        return (args.length > 0) ? StringUtil.copyPartialMatches(args[0], COMMANDS, new ArrayList<>()) : null;
+        return BLANK;
     }
 }
