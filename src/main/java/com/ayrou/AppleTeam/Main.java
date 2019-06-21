@@ -23,11 +23,10 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-        createData();
         message = new Message();
         teamManager = TeamManager.getInstance();
-        CommandManager commandManager = new CommandManager();
-        commandManager.setup();
+        createData();
+        new CommandManager().setup();
         info(message.getMessage("Plugin_Initialize"));
         new UpdateTask(plugin,teamManager);
     }

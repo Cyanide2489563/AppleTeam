@@ -113,23 +113,22 @@ public final class Team {
 
         invitations.put(player, System.currentTimeMillis() + teamManager.getInviteTimeout());
         sendMessages(inviterName + "已邀請玩家" + playerName);
-
-        return invitations.containsKey(player) & sendInvitations(inviter_Player, player_Player);
+        sendInvitations(player_Player);
+        return invitations.containsKey(player);
     }
 
     boolean accept(UUID player) {
-        members.add(player);
-        setScoreBoard(player);
+        addMember(player);
         invitations.remove(player);
-        return members.contains(player);
+        return members.contains(player) & !invitations.containsKey(player);
     }
 
     boolean cancel(UUID player) {
         invitations.remove(player);
-        return members.contains(player);
+        return !invitations.containsKey(player);
     }
 
-    private boolean sendInvitations(Player inviter, Player player) {
+    private void sendInvitations(Player player) {
         TextComponent up = new TextComponent("§a============================§r\n");
         TextComponent text = new TextComponent("隊伍：§6" + name + "§f已邀請你\n");
         TextComponent text1 = new TextComponent("§2§n[接受邀請]");
@@ -153,7 +152,6 @@ public final class Team {
 
         PacketPlayOutChat packet = new PacketPlayOutChat(comp);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-        return true;
     }
 
     private void sendMessages(String messages) {
@@ -177,14 +175,6 @@ public final class Team {
         }
     }
 
-    void checkDisconnectionList() {
-        disconnectionList.forEach((UUID,Long) -> {
-            if (Long > System.currentTimeMillis()) {
-                disconnectionList.remove(UUID);
-            }
-        });
-    }
-
     private void addMember(UUID player) {
         members.add(player);
         setScoreBoard(player);
@@ -197,7 +187,7 @@ public final class Team {
 
         ArrayList<org.bukkit.scoreboard.Team> scoreTeam = new ArrayList<>();
         for (int i = 0, num = teamManager.getMaximum(); i < num; i++) {
-            String entryName = String.valueOf(ChatColor.GREEN);
+            String entryName = ChatColor.GREEN.toString();
             ChatColor color = ChatColor.GRAY;
             String playerName = "沒有隊員";
             String distance = " ";
@@ -207,9 +197,11 @@ public final class Team {
                 member = members.get(i);
 
                 if (!member.equals(player)) {
-                    Player player1 = Objects.requireNonNull(Bukkit.getPlayer(member));
-                    Player player2 = Objects.requireNonNull(Bukkit.getPlayer(player));
-                    distance += String.valueOf((int)Math.floor(player1.getLocation().distance(player2.getLocation())));
+                    Player player1 = Bukkit.getPlayer(member);
+                    Player player2 = Bukkit.getPlayer(player);
+                    if (player1 != null | player2 != null) {
+                        distance += String.valueOf((int)Math.floor(player1.getLocation().distance(player2.getLocation())));
+                    }
                 }
                 if (member.equals(leader)) {
                     color = ChatColor.YELLOW;
@@ -235,7 +227,8 @@ public final class Team {
 
     void updateScoreBoard() {
         for (UUID member : members) {
-            Player player = Objects.requireNonNull(Bukkit.getPlayer(member));
+            Player player = Bukkit.getPlayer(member);
+            if (player == null) continue;
             Scoreboard boardTeam = player.getScoreboard();
 
             for (int i = 0, num = teamManager.getMaximum(); i < num; i++) {
@@ -266,7 +259,7 @@ public final class Team {
         }
     }
 
-    boolean isDisconnectionTimeOut(UUID player) {
+    private boolean isDisconnectionTimeOut(UUID player) {
         if (disconnectionList.containsKey(player)) {
             return disconnectionList.get(player) > System.currentTimeMillis();
         }
