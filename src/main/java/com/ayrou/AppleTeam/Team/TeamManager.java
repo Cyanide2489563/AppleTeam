@@ -228,7 +228,6 @@ public final class TeamManager {
             public void run() {
                 teams.forEach((String, Team) -> {
                     Team.checkInvitations();
-                    Team.checkDisconnectionList();
                     Team.updateScoreBoard();
                 });
             }
