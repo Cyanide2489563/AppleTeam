@@ -4,6 +4,7 @@ import com.Ayrou.AppleTeam.Main;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -24,9 +25,7 @@ public final class TeamManager {
     }
 
     public static TeamManager getInstance() {
-        if (teamManager == null) {
-            teamManager = new TeamManager();
-        }
+        if (teamManager == null) teamManager = new TeamManager();
         return teamManager;
     }
 
@@ -220,6 +219,16 @@ public final class TeamManager {
     public Team getTeam(UUID player) {
         if (player == null) throw new NullPointerException();
         return teams.values().stream().filter(team -> team.isMember(player)).findFirst().orElse(null);
+    }
+
+    public Team getTeam(Player player) {
+        if (player == null) throw new NullPointerException();
+        return teams.values().stream().filter(team -> team.isMember(player.getUniqueId())).findFirst().orElse(null);
+    }
+
+    public Team getOfflineTeam(Player player) {
+        if (player == null) throw new NullPointerException();
+        return teams.values().stream().filter(team -> team.isOfflineMember(player.getUniqueId())).findFirst().orElse(null);
     }
 
     public void update() {

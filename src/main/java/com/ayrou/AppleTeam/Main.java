@@ -1,6 +1,8 @@
 package com.Ayrou.AppleTeam;
 
 import com.Ayrou.AppleTeam.Commands.CommandManager;
+import com.Ayrou.AppleTeam.Listener.Connection;
+import com.Ayrou.AppleTeam.Listener.Disconnection;
 import com.Ayrou.AppleTeam.Message.Message;
 import com.Ayrou.AppleTeam.Team.TeamManager;
 import com.Ayrou.AppleTeam.Utility.UpdateTask;
@@ -27,8 +29,10 @@ public final class Main extends JavaPlugin {
         teamManager = TeamManager.getInstance();
         createData();
         new CommandManager().setup();
-        info(message.getMessage("Plugin_Initialize"));
         new UpdateTask(plugin,teamManager);
+        getServer().getPluginManager().registerEvents(new Connection(), this);
+        getServer().getPluginManager().registerEvents(new Disconnection(), this);
+        info(message.getMessage("Plugin_Initialize"));
     }
 
     @Override
