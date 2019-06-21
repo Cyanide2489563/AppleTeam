@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CommandTabManager implements TabCompleter {
 
-    private static final List<String> COMMANDS = Arrays.asList("menu", "invite", "leave", "kick");
+    private static final List<String> COMMANDS = Arrays.asList("menu", "invite", "leave", "kick", "disband");
     private static final List<String> BLANK = Arrays.asList("", "");
 
     @Override

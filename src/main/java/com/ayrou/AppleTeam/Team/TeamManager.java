@@ -131,12 +131,12 @@ public final class TeamManager {
     }
 
     public String joinTeam(String name, UUID player) {
-        if (hasTeam(player)) return "已有隊伍";
+        if (hasTeam(player)) return ChatColor.GREEN + "你已有隊伍";
 
         Team team = teams.get(name);
-        if (team == null) return "該隊伍不存在";
-        if (team.isTeamFull()) return "隊伍已滿";
-        if (team.isMember(player)) return "你已是隊伍成員";
+        if (team == null) return ChatColor.GREEN + "該隊伍不存在";
+        if (team.isTeamFull()) return ChatColor.GREEN + "隊伍已滿";
+        if (team.isMember(player)) return ChatColor.GREEN + "你已是隊伍成員";
         //TODO 判斷是否為黑名單成員
         if (team.isFriendCanJoin()) {
 
@@ -216,7 +216,6 @@ public final class TeamManager {
     }
 
     private boolean removeTeam(Team team) {
-        if (team == null) throw new NullPointerException();
         teams.remove(team.getTeamName());
         return teams.containsKey(team.getTeamName());
     }
