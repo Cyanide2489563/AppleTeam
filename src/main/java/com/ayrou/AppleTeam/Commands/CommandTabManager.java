@@ -36,6 +36,7 @@ public class CommandTabManager implements TabCompleter {
                     if (args.length > 2) return BLANK;
                     return team.getTeamMemberName();
                 }
+                if (args.length >= 2) return BLANK;
                 return StringUtil.copyPartialMatches(args[0], COMMANDS, new ArrayList<>());
             }
             else {
