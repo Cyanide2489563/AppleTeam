@@ -194,20 +194,21 @@ public final class Team {
     }
 
     private void sendMessages(String messages) {
-        members.forEach(UUID -> Objects.requireNonNull(Bukkit.getPlayer(UUID)).sendMessage(messages));
+        members.forEach(UUID -> {
+            Player player = Bukkit.getPlayer(UUID);
+            if (player != null) player.sendMessage(messages);
+        });
     }
 
     void checkInvitations() {
         for (Iterator<Map.Entry<UUID, Long>> it = invitations.entrySet().iterator(); it.hasNext();) {
             Map.Entry<UUID, Long> item = it.next();
             if (item.getValue() < System.currentTimeMillis()) {
-                Player player;
                 String playerName;
 
                 if (Bukkit.getOfflinePlayer(item.getKey()).isOnline()) {
-                    player = Bukkit.getPlayer(item.getKey());
+                    Player player = Bukkit.getPlayer(item.getKey());
                     player.sendMessage(message.getMessage("Team_Invite_TimeOut"));
-
                 }
                 playerName = Bukkit.getOfflinePlayer(item.getKey()).getName();
                 sendMessages(ChatColor.YELLOW + playerName + ChatColor.GREEN + "的邀請已過期");
@@ -217,8 +218,8 @@ public final class Team {
     }
 
     private void addMember(UUID player) {
-        members.add(player);
         sendMessages(ChatColor.YELLOW + Bukkit.getPlayer(player).getName() + ChatColor.GREEN + "已加入隊伍");
+        members.add(player);
         setScoreBoard(player);
     }
 
@@ -243,23 +244,23 @@ public final class Team {
             if (members.size() > i) {
                 member = members.get(i);
 
-                if (Bukkit.getPlayer(member) != null) {
-                    if (!member.equals(player)) {
-                        Player player1 = Bukkit.getPlayer(member);
-                        Player player2 = Bukkit.getPlayer(player);
-                        if (player1 != null | player2 != null) {
-                            distance += String.valueOf((int)Math.floor(player1.getLocation().distance(player2.getLocation())));
-                        }
-                    }
+                if (Bukkit.getOfflinePlayer(member).isOnline()) {
                     if (member.equals(leader)) {
                         color = ChatColor.YELLOW;
                         entryName  += "隊長-";
                     }
                     else {
-                        color = ChatColor.BLUE;
+                        color = ChatColor.DARK_AQUA;
                         entryName += "隊員"+ i;
                     }
-                    playerName = Objects.requireNonNull(Bukkit.getPlayer(member)).getName();
+                    Bukkit.getPlayer(member).getName();
+                    if (!member.equals(player)) {
+                        Player player1 = Bukkit.getPlayer(member);
+                        Player player2 = Bukkit.getPlayer(player);
+                        if (player1 != null & player2 != null) {
+                            distance += String.valueOf((int)Math.floor(player1.getLocation().distance(player2.getLocation())));
+                        }
+                    }
                 }
                 else {
                     color = ChatColor.RED;
@@ -294,21 +295,22 @@ public final class Team {
                     member1 = members.get(i);
 
                     if (Bukkit.getOfflinePlayer(member1).isOnline()) {
-                        if (member.equals(leader))
+                        if (member1.equals(leader))
                             color = ChatColor.YELLOW;
                         else
-                            color = ChatColor.BLUE;
-                    }
-                    else color = ChatColor.RED;
-
-                    if (Bukkit.getPlayer(member1) != null) {
+                            color = ChatColor.DARK_AQUA;
                         if (!member1.equals(member)) {
-                            Player player1 = Objects.requireNonNull(Bukkit.getPlayer(member1));
-                            distance.append((int) Math.floor(player1.getLocation().distance(player.getLocation())));
+                            Player player1 = Bukkit.getPlayer(member1);
+                            if (player1 != null) {
+                                distance.append((int) Math.floor(player1.getLocation().distance(player.getLocation())));
+                            }
                         }
                         playerName = Bukkit.getPlayer(member1).getName();
                     }
-                    else playerName = Bukkit.getOfflinePlayer(member1).getName();
+                    else {
+                        color = ChatColor.RED;
+                        playerName = Bukkit.getOfflinePlayer(member1).getName();
+                    }
                 }
                 String data = color + playerName + ChatColor.WHITE + distance;
                 if (boardTeam.getTeam(String.valueOf(i)) != null) boardTeam.getTeam(String.valueOf(i)).setSuffix(data);
@@ -318,16 +320,23 @@ public final class Team {
 
     private void clearScoreBoard(UUID member) {
         Player player = Bukkit.getPlayer(member);
-        if (player != null) {
-            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-        }
+        if (player != null) player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
-    private boolean isDisconnectionTimeOut(UUID player) {
-        if (disconnectionList.containsKey(player)) {
-            return disconnectionList.get(player) < System.currentTimeMillis();
+    void checkDisconnectionList() {
+        for (Iterator<Map.Entry<UUID, Long>> it = disconnectionList.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<UUID, Long> item = it.next();
+            if (item.getValue() < System.currentTimeMillis()) {
+                String playerName = Bukkit.getOfflinePlayer(item.getKey()).getName();
+                sendMessages(ChatColor.YELLOW + playerName + ChatColor.GREEN + "的離線保留時間已過期");
+                removeMember(item.getKey());
+                if (item.getKey().equals(leader) & members.size() > 0) {
+                    leader = members.get((int)(Math.random() * (members.size() - 1)));
+                    sendMessages(ChatColor.YELLOW + Bukkit.getPlayer(leader).getName() + ChatColor.GREEN + "已成為新隊長");
+                }
+                it.remove();
+            }
         }
-        return true;
     }
 
     boolean isOfflineMember(UUID player) {
@@ -335,10 +344,6 @@ public final class Team {
     }
 
     public String reConnection(UUID player) {
-        if (isDisconnectionTimeOut(player)) {
-            disconnectionList.remove(player);
-            return "你已超過重新連線時間，已被自動移出隊伍";
-        }
         setScoreBoard(player);
         disconnectionList.remove(player);
         return "已重新連線回隊伍";

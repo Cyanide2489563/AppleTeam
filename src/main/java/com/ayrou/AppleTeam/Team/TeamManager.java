@@ -186,7 +186,7 @@ public final class TeamManager {
             maximum = 5;
         }
 
-        if (config.getLong("Team.inviteTimeout") >= 30) {
+        if (config.getLong("Team.inviteTimeout") > 30) {
             inviteTimeout = config.getInt("Team.inviteTimeout") * 1000;
         }
         else {
@@ -241,14 +241,10 @@ public final class TeamManager {
     }
 
     public void update() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                teams.forEach((String, Team) -> {
-                    Team.checkInvitations();
-                    Team.updateScoreBoard();
-                });
-            }
-        }.runTaskTimer(plugin, 1, 1);
+        teams.forEach((String, Team) -> {
+            Team.checkDisconnectionList();
+            Team.updateScoreBoard();
+            Team.checkInvitations();
+        });
     }
 }
