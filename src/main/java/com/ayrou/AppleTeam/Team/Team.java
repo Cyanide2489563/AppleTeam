@@ -294,7 +294,7 @@ public final class Team {
                 if (members.size() > i) {
                     member1 = members.get(i);
 
-                    if (Bukkit.getOfflinePlayer(member1).isOnline()) {
+                    if (Bukkit.getPlayer(member1) != null) {
                         if (member1.equals(leader))
                             color = ChatColor.YELLOW;
                         else

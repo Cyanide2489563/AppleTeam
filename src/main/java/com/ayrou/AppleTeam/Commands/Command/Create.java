@@ -11,6 +11,7 @@ public class Create extends SubCommand {
     public void onCommand(Player player, String[] args) {
         if (args.length > 1) {
             if (!Main.getTeamManager().hasTeam(player.getUniqueId())) {
+
                 new TeamManager.Builder()
                         .setName(args[1])
                         .setLeader(player.getUniqueId())

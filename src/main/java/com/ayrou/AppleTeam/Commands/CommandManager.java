@@ -30,6 +30,8 @@ public class CommandManager implements CommandExecutor {
         this.commands.add(new Disband());
         this.commands.add(new Leave());
         this.commands.add(new Kick());
+
+        this.commands.add(new Test());
     }
 
     @Override
