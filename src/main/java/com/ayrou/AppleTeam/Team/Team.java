@@ -330,7 +330,7 @@ public final class Team {
                 String playerName = Bukkit.getOfflinePlayer(item.getKey()).getName();
                 sendMessages(ChatColor.YELLOW + playerName + ChatColor.GREEN + "的離線保留時間已過期");
                 removeMember(item.getKey());
-                if (item.getKey().equals(leader) & members.size() > 0) {
+                if (item.getKey().equals(leader) & members.size() > 1) {
                     leader = members.get((int)(Math.random() * (members.size() - 1)));
                     sendMessages(ChatColor.YELLOW + Bukkit.getPlayer(leader).getName() + ChatColor.GREEN + "已成為新隊長");
                 }

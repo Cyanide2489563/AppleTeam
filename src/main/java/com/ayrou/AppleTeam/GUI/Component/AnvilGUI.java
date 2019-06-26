@@ -301,12 +301,13 @@ public class AnvilGUI {
 
     }
 
-    public void open() { open(title); }
+    public void open() {
+        open(title);
+    }
 
     public void open(String Title) {
 
         player.setLevel(player.getLevel() + 1);
-
         try {
 
             Object P = NMSManager.getHandle(player);
@@ -370,13 +371,11 @@ public class AnvilGUI {
                     NMSManager.getField(NMSManager.getNMSClass("Container"), "windowId").set(AC.get(P), ID);
 
                     NMSManager.getMethod("addSlotListener", AC.get(P).getClass(), P.getClass()).invoke(AC.get(P), P);
-
                 }
-
             }
-
-        } catch (Exception e) { e.printStackTrace(); }
-
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 }

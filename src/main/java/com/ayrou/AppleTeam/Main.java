@@ -86,5 +86,19 @@ public final class Main extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+
+        File guiFolder =  new File(getDataFolder(), "GUI");
+        if(!guiFolder.exists())
+            guiFolder.mkdirs();
+
+        File guiFile =  new File(getDataFolder(), "menu.xml");
+        if (!guiFile.exists()) {
+            try {
+                InputStream inputStream = this.getClass().getResourceAsStream("/GUI/menu.xml");
+                Files.copy(inputStream, Paths.get(getDataFolder() + "/GUI/menu.xml"), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
