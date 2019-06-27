@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class Button{
 
-    public ItemStack createItemStack(ButtonType type) {
+    public static ItemStack getItemStack(ButtonType type) {
         ItemStack itemStack = new ItemStack(Material.STONE_HOE);
         ItemMeta itemmeta = itemStack.getItemMeta();
 

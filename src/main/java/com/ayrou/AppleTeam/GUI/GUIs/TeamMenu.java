@@ -30,6 +30,11 @@ public class TeamMenu extends SubGui {
     }
 
     @Override
+    public void openInventory(Player player) {
+        gui.show(player);
+    }
+
+    @Override
     public String titleName() {
         return titleName;
     }
