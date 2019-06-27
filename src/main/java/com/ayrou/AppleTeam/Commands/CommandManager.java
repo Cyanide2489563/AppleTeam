@@ -37,14 +37,15 @@ public class CommandManager implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(message.getMessage("Team_Command_Invalid_Sender"));
-            return true;
-        }
-
-        Player player = (Player) sender;
-
         if (arg1.getName().equalsIgnoreCase(command)) {
+
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(message.getMessage("Team_Command_Invalid_Sender"));
+                return true;
+            }
+
+            Player player = (Player) sender;
+
             if (args.length == 0) {
                 player.sendMessage(message.getMessage("Team_Command_Help"));
                 return true;
@@ -56,7 +57,6 @@ public class CommandManager implements CommandExecutor {
                 player.sendMessage(message.getMessage("Team_Command_Invalid_SubCommand"));
                 return true;
             }
-
 
             try {
                 target.onCommand(player,args);
@@ -72,18 +72,12 @@ public class CommandManager implements CommandExecutor {
     private SubCommand get(String name) {
 
         for (SubCommand sc : this.commands) {
-            if (sc.name().equalsIgnoreCase(name)) {
-                return sc;
-            }
+            if (sc.name().equalsIgnoreCase(name)) return sc;
 
-            String[] aliases;
-            int length = (aliases = sc.aliases()).length;
+            String[] aliases = sc.aliases();
 
-            for (int i = 0; i < length; i++) {
-                String alias = aliases[i];
-                if (name.equalsIgnoreCase(alias)) {
-                    return sc;
-                }
+            for (int i = 0, length = sc.aliases().length; i < length; i++) {
+                if (name.equalsIgnoreCase(aliases[i])) return sc;
             }
         }
         return null;
