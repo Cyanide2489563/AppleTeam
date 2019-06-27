@@ -1,11 +1,10 @@
 package com.Ayrou.AppleTeam.Team;
 
-import com.Ayrou.AppleTeam.Main;
+import com.Ayrou.AppleTeam.AppleTeam;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -13,7 +12,7 @@ import java.util.UUID;
 public final class TeamManager {
 
     private static TeamManager teamManager;
-    private Main plugin = Main.getInstance();
+    private AppleTeam plugin = AppleTeam.getInstance();
     private static HashMap<String, Team> teams; //隊伍列表
     private int maximum; //隊伍人數上限
     private int inviteTimeout; //邀請失效時間

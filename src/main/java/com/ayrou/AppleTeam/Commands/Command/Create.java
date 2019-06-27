@@ -1,7 +1,7 @@
 package com.Ayrou.AppleTeam.Commands.Command;
 
 import com.Ayrou.AppleTeam.Commands.SubCommand;
-import com.Ayrou.AppleTeam.Main;
+import com.Ayrou.AppleTeam.AppleTeam;
 import com.Ayrou.AppleTeam.Team.TeamManager;
 import org.bukkit.entity.Player;
 
@@ -10,7 +10,7 @@ public class Create extends SubCommand {
     @Override
     public void onCommand(Player player, String[] args) {
         if (args.length > 1) {
-            if (!Main.getTeamManager().hasTeam(player.getUniqueId())) {
+            if (!AppleTeam.getTeamManager().hasTeam(player.getUniqueId())) {
 
                 new TeamManager.Builder()
                         .setName(args[1])

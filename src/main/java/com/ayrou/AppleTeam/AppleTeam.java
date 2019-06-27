@@ -7,7 +7,9 @@ import com.Ayrou.AppleTeam.Message.Message;
 import com.Ayrou.AppleTeam.Team.TeamManager;
 import com.Ayrou.AppleTeam.Utility.UpdateTask;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,11 +18,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-public final class Main extends JavaPlugin {
+public final class AppleTeam extends JavaPlugin {
 
-    private static Main plugin;
+    private static AppleTeam plugin;
     private static Message message;
     private static TeamManager teamManager;
+
+    public AppleTeam() {
+        super();
+    }
+
+    protected AppleTeam(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     @Override
     public void onEnable() {
@@ -48,7 +58,7 @@ public final class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("[AppleTeam] §4" + string);
     }
 
-    public static Main getInstance() {
+    public static AppleTeam getInstance() {
         return plugin;
     }
 

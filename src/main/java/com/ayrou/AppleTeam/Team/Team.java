@@ -1,6 +1,6 @@
 package com.Ayrou.AppleTeam.Team;
 
-import com.Ayrou.AppleTeam.Main;
+import com.Ayrou.AppleTeam.AppleTeam;
 import com.Ayrou.AppleTeam.Message.Message;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -21,8 +21,8 @@ import java.util.*;
 
 public final class Team {
 
-    private Message message = Main.getMessage();
-    private TeamManager teamManager = Main.getTeamManager();
+    private Message message = AppleTeam.getMessage();
+    private TeamManager teamManager = AppleTeam.getTeamManager();
     private String name;
     private UUID leader;
     private Visibility visibility;

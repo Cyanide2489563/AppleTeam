@@ -1,7 +1,7 @@
 package com.Ayrou.AppleTeam.Commands;
 
 import com.Ayrou.AppleTeam.Commands.Command.*;
-import com.Ayrou.AppleTeam.Main;
+import com.Ayrou.AppleTeam.AppleTeam;
 import com.Ayrou.AppleTeam.Message.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,9 +14,8 @@ import java.util.Objects;
 public class CommandManager implements CommandExecutor {
 
     private ArrayList<SubCommand> commands = new ArrayList<>();
-    private Main plugin = Main.getInstance();
-    private Message message = Main.getMessage();
-
+    private AppleTeam plugin = AppleTeam.getInstance();
+    private Message message = AppleTeam.getMessage();
     private String command = "team";
 
     public void setup() {
@@ -70,12 +69,10 @@ public class CommandManager implements CommandExecutor {
     }
 
     private SubCommand get(String name) {
-
         for (SubCommand sc : this.commands) {
             if (sc.name().equalsIgnoreCase(name)) return sc;
 
             String[] aliases = sc.aliases();
-
             for (int i = 0, length = sc.aliases().length; i < length; i++) {
                 if (name.equalsIgnoreCase(aliases[i])) return sc;
             }

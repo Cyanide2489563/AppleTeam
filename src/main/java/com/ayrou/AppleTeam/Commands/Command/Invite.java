@@ -1,7 +1,7 @@
 package com.Ayrou.AppleTeam.Commands.Command;
 
 import com.Ayrou.AppleTeam.Commands.SubCommand;
-import com.Ayrou.AppleTeam.Main;
+import com.Ayrou.AppleTeam.AppleTeam;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ public class Invite extends SubCommand {
     public void onCommand(Player player, String[] args) {
         if (args.length > 1) {
             UUID target = Objects.requireNonNull(Bukkit.getPlayer(args[1])).getUniqueId();
-            String status = Main.getTeamManager().invitePlayer(player.getUniqueId(), target);
+            String status = AppleTeam.getTeamManager().invitePlayer(player.getUniqueId(), target);
             player.sendMessage(status);
         }
         else player.sendMessage("請輸入玩家名稱");

@@ -1,14 +1,14 @@
 package com.Ayrou.AppleTeam.Commands.Command;
 
 import com.Ayrou.AppleTeam.Commands.SubCommand;
-import com.Ayrou.AppleTeam.Main;
+import com.Ayrou.AppleTeam.AppleTeam;
 import org.bukkit.entity.Player;
 
 public class Cancel extends SubCommand {
     @Override
     public void onCommand(Player player, String[] args) {
         if (args.length > 1) {
-            String status = Main.getTeamManager().cancelJoin(args[1], player.getUniqueId());
+            String status = AppleTeam.getTeamManager().cancelJoin(args[1], player.getUniqueId());
 
             player.sendMessage(status);
         }

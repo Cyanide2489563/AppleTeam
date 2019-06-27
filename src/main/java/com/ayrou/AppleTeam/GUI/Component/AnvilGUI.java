@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-import com.Ayrou.AppleTeam.Main;
+import com.Ayrou.AppleTeam.AppleTeam;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ import org.bukkit.plugin.Plugin;
 
 public class AnvilGUI {
 
-    private Plugin plugin = Main.getInstance();
+    private Plugin plugin = AppleTeam.getInstance();
 
     private boolean colorrename = true;
 
