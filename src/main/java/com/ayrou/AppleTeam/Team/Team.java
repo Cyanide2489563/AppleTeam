@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -138,7 +139,7 @@ public final class Team {
         return false;
     }
 
-    private void sendInvitations(Player player) {
+    private void sendInvitations(@NotNull Player player) {
         TextComponent up = new TextComponent("§a============================§r\n");
         TextComponent text = new TextComponent("隊伍：§6" + name + "§f已邀請你\n");
         TextComponent text1 = new TextComponent("§2§n[接受邀請]");
@@ -163,6 +164,7 @@ public final class Team {
         PacketPlayOutChat packet = new PacketPlayOutChat(comp);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
+
 
     public String leave(UUID player) {
         removeMember(player);

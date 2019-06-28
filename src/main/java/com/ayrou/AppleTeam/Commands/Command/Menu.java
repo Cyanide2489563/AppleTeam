@@ -8,8 +8,7 @@ public class Menu extends SubCommand {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        TeamMenu teamMenu = new TeamMenu();
-        teamMenu.openTeamMenu(player);
+        new TeamMenu().openInventory(player);
     }
 
     @Override

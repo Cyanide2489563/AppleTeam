@@ -16,21 +16,17 @@ public class TeamMenu extends SubGui {
     private Gui gui = new Gui(AppleTeam.getInstance(), 6, titleName);
     private StaticPane top_Pane = new StaticPane(0, 0, 9, 1, Pane.Priority.NORMAL);
 
-    GuiItem create_Team = new GuiItem(Button.getItemStack(ButtonType.CREATE_TEAM), event -> {
+    private GuiItem create_Team = new GuiItem(Button.getItemStack(ButtonType.CREATE_TEAM), event -> {
         if (event.isLeftClick()) {
-            event.getWhoClicked().sendMessage("建立隊伍");
+            AppleTeam.getGuiManager().get("建立隊伍").openInventory((Player) event.getWhoClicked());
         }
         event.setCancelled(true);
     });
-
-    public void openTeamMenu(Player player) {
-        top_Pane.addItem(create_Team,0,0);
-        gui.addPane(top_Pane);
-        gui.show(player);
-    }
-
+    private GuiItem team[];
     @Override
     public void openInventory(Player player) {
+        top_Pane.addItem(create_Team,0,0);
+        gui.addPane(top_Pane);
         gui.show(player);
     }
 
@@ -38,4 +34,6 @@ public class TeamMenu extends SubGui {
     public String titleName() {
         return titleName;
     }
+
+    GuiItem item;
 }

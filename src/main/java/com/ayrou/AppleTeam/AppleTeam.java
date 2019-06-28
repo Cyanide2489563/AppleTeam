@@ -1,6 +1,7 @@
 package com.Ayrou.AppleTeam;
 
 import com.Ayrou.AppleTeam.Commands.CommandManager;
+import com.Ayrou.AppleTeam.GUI.GUIManager;
 import com.Ayrou.AppleTeam.Listener.Connection;
 import com.Ayrou.AppleTeam.Listener.Disconnection;
 import com.Ayrou.AppleTeam.Message.Message;
@@ -12,7 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,9 +20,10 @@ import java.nio.file.StandardCopyOption;
 
 public final class AppleTeam extends JavaPlugin {
 
-    private static AppleTeam plugin;
+    private static AppleTeam instance;
     private static Message message;
     private static TeamManager teamManager;
+    private static GUIManager guiManager;
 
     public AppleTeam() {
         super();
@@ -34,20 +35,31 @@ public final class AppleTeam extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        plugin = this;
-        message = new Message();
-        teamManager = TeamManager.getInstance();
-        createData();
-        new CommandManager().setup();
-        new UpdateTask(plugin,teamManager);
-        getServer().getPluginManager().registerEvents(new Connection(), this);
-        getServer().getPluginManager().registerEvents(new Disconnection(), this);
+        initialization();
         info(message.getMessage("Plugin_Initialize"));
     }
 
     @Override
     public void onDisable() {
         info(message.getMessage("Plugin_Close"));
+    }
+
+    private void initialization() {
+        setInstance(this);
+        createData();
+        message = new Message();
+        teamManager = TeamManager.getInstance();
+        guiManager = new GUIManager();
+        guiManager.setup();
+        new CommandManager().setup();
+        guiManager = new GUIManager();
+        new UpdateTask(instance,teamManager);
+        getServer().getPluginManager().registerEvents(new Connection(), this);
+        getServer().getPluginManager().registerEvents(new Disconnection(), this);
+    }
+
+    public static AppleTeam getInstance() {
+        return instance;
     }
 
     public static void info(String string) {
@@ -58,43 +70,58 @@ public final class AppleTeam extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("[AppleTeam] §4" + string);
     }
 
-    public static AppleTeam getInstance() {
-        return plugin;
-    }
-
     public static TeamManager getTeamManager() {
         return teamManager;
+    }
+
+    public static GUIManager getGuiManager() {
+        return guiManager;
     }
 
     public static Message getMessage() {
         return message;
     }
 
-    private void createData() {
-        File languageFolder =  new File(getDataFolder(), "Language");
-        if(!languageFolder.exists())
-            languageFolder.mkdirs();
+    private void setInstance(AppleTeam instance) {
+        AppleTeam.instance = instance;
+    }
 
+    private void createData() {
+
+        File languageFolder = new File(getDataFolder(), "Language");
         File languageFile =  new File(languageFolder, "language.yml");
-        if (!languageFile.exists()) {
-            try {
-                languageFile.createNewFile();
+        File configFile =  new File(getDataFolder(), "config.yml");
+        try {
+
+            boolean isDirectoryCreated = languageFolder.exists();
+            if (!isDirectoryCreated) {
+                isDirectoryCreated = languageFolder.mkdirs();
+            }
+
+            boolean isLanguageFileCreated = languageFile.exists();
+            if (isDirectoryCreated & !isLanguageFileCreated) {
+                info("建立檔案中");
+                isLanguageFileCreated = languageFile.createNewFile();
                 InputStream inputStream = this.getClass().getResourceAsStream("/language.yml");
                 Files.copy(inputStream, Paths.get(getDataFolder() + "/Language/language.yml"), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
 
-        File configFile =  new File(getDataFolder(), "config.yml");
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
+            boolean isConfigFileCreated = configFile.exists();
+            if (!isConfigFileCreated) {
+                isConfigFileCreated = configFile.createNewFile();
                 InputStream inputStream = this.getClass().getResourceAsStream("/config.yml");
                 Files.copy(inputStream, Paths.get(getDataFolder() + "/config.yml"), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+
+            if (isLanguageFileCreated || isConfigFileCreated)
+                info("建立檔案成功");
+            else
+                info("建立檔案失敗");
         }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
 }
