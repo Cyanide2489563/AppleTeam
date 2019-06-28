@@ -19,10 +19,20 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Ayrou.AppleTeam.main" />
     <orderEntry type="library" name="Gradle: :spigot-1.13.2:" level="project" />
+    <orderEntry type="library" name="Gradle: me.clip:placeholderapi:2.10.3" level="project" />
     <orderEntry type="library" name="Gradle: com.github.stefvanschie.inventoryframework:IF:0.5.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.seeseemelk:MockBukkit-v1.13:0.2.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.bukkit:bukkit:1.13.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-library:1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:21.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.yaml:snakeyaml:1.23" level="project" />
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:1.3.2" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="AppleTeam.main" />
 </module>
