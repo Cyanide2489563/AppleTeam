@@ -31,6 +31,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'com.github.seeseemelk:MockBukkit-v1.13:0.2.0'
     compile name: 'spigot-1.13.2'
     compile 'me.clip:placeholderapi:2.10.3'
     compile 'com.github.stefvanschie.inventoryframework:IF:0.5.8'
