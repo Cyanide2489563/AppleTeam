@@ -1,5 +1,11 @@
 package com.Ayrou.AppleTeam;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import com.Ayrou.AppleTeam.Commands.CommandManager;
 import com.Ayrou.AppleTeam.GUI.GUIManager;
 import com.Ayrou.AppleTeam.Listener.Connection;
@@ -11,12 +17,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
-
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 public final class AppleTeam extends JavaPlugin {
 
@@ -99,7 +99,7 @@ public final class AppleTeam extends JavaPlugin {
             }
 
             boolean isLanguageFileCreated = languageFile.exists();
-            if (isDirectoryCreated & !isLanguageFileCreated) {
+            if (isDirectoryCreated && !isLanguageFileCreated) {
                 info("建立檔案中");
                 isLanguageFileCreated = languageFile.createNewFile();
                 InputStream inputStream = this.getClass().getResourceAsStream("/language.yml");
@@ -113,10 +113,14 @@ public final class AppleTeam extends JavaPlugin {
                 Files.copy(inputStream, Paths.get(getDataFolder() + "/config.yml"), StandardCopyOption.REPLACE_EXISTING);
             }
 
-            if (isLanguageFileCreated || isConfigFileCreated)
+            if (isLanguageFileCreated || isConfigFileCreated) {
                 info("建立檔案成功");
-            else
+            }
+            else {
                 info("建立檔案失敗");
+                Bukkit.getPluginManager().disablePlugins();
+            }
+
         }
         catch (Exception e) {
             e.printStackTrace();
