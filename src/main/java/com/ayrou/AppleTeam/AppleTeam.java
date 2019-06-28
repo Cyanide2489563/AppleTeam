@@ -1,11 +1,5 @@
 package com.Ayrou.AppleTeam;
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-
 import com.Ayrou.AppleTeam.Commands.CommandManager;
 import com.Ayrou.AppleTeam.GUI.GUIManager;
 import com.Ayrou.AppleTeam.Listener.Connection;
@@ -13,6 +7,13 @@ import com.Ayrou.AppleTeam.Listener.Disconnection;
 import com.Ayrou.AppleTeam.Message.Message;
 import com.Ayrou.AppleTeam.Team.TeamManager;
 import com.Ayrou.AppleTeam.Utility.UpdateTask;
+
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,8 +36,9 @@ public final class AppleTeam extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        initialization();
         info(message.getMessage("Plugin_Initialize"));
+        initialization();
+        info("插件初始化完成");
     }
 
     @Override
