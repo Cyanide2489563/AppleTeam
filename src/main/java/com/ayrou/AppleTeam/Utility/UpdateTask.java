@@ -6,12 +6,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class UpdateTask extends BukkitRunnable {
 
-    public UpdateTask(AppleTeam plugin, TeamManager teamManager) {
+    public UpdateTask(AppleTeam plugin) {
         runTaskTimer(plugin, 20, 20);
     }
 
     @Override
     public void run() {
-        AppleTeam.getTeamManager().update();
+        TeamManager.getInstance().update();
     }
 }

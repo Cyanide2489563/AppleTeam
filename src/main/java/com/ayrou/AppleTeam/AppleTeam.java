@@ -55,12 +55,11 @@ public final class AppleTeam extends JavaPlugin {
     private void initialization() {
         createData();
         info(message.getMessage("Plugin_Initialize"));
-        TeamManager teamManager = TeamManager.getInstance();
         guiManager = new GUIManager();
         guiManager.setup();
         new CommandManager().setup();
         guiManager = new GUIManager();
-        new UpdateTask(instance, teamManager);
+        new UpdateTask(instance);
         getServer().getPluginManager().registerEvents(new Connection(), this);
         getServer().getPluginManager().registerEvents(new Disconnection(), this);
         info("插件初始化完成");
