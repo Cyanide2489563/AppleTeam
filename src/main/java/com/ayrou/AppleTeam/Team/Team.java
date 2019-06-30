@@ -38,7 +38,7 @@ public final class Team {
     private HashMap<UUID, Long> reviewList;
     private HashMap<UUID, Long> disconnectionList;
 
-    Team(TeamManager.Builder builder) {
+    Team(TeamBuilder builder) {
         this.name = builder.name;
         this.leader = builder.leader;
         this.visibility = builder.visibility;

@@ -13,7 +13,7 @@ public final class TeamManager {
 
     private static TeamManager teamManager;
     private AppleTeam plugin = AppleTeam.getInstance();
-    private static HashMap<String, Team> teams; //隊伍列表
+    private HashMap<String, Team> teams; //隊伍列表
     private int maximum; //隊伍人數上限
     private int inviteTimeout; //邀請失效時間
     private int disconnectionTimeout; //斷線逾期時間
@@ -28,67 +28,8 @@ public final class TeamManager {
         return teamManager;
     }
 
-    public static class Builder {
-        String name;
-        UUID leader;
-        Visibility visibility;
-        boolean encryption;
-        boolean application;
-        boolean friend;
-        String password;
-        Invite invite;
-        ItemGet itemGet;
-
-        public Builder setName(String name) {
-            if (name == null) throw new NullPointerException();
-            this.name = name;
-            return this;
-        }
-
-        public Builder setLeader(UUID player) {
-            if (player == null) throw new NullPointerException();
-            this.leader = player;
-            return this;
-        }
-
-        public Builder setVisibility(Visibility visibility) {
-            if (visibility == null) throw new NullPointerException();
-            this.visibility = visibility;
-            return this;
-        }
-
-        public Builder setEncryption(String password) {
-            if (password == null) throw new NullPointerException();
-            this.encryption = true;
-            this.password = password;
-            return this;
-        }
-
-        public Builder setApplication(boolean application) {
-            this.application = application;
-            return this;
-        }
-
-        public Builder setFriend(boolean friend) {
-            this.friend = friend;
-            return this;
-        }
-
-        public Builder setInvite(Invite invite) {
-            if (invite == null) throw new NullPointerException();
-            this.invite = invite;
-            return this;
-        }
-
-        public Builder setItemGet(ItemGet itemGet) {
-            this.itemGet = itemGet;
-            return this;
-        }
-
-        public void create() {
-            Team team = new Team(this);
-            TeamManager.teams.put(name, team);
-        }
+    public void addTeam(String name, Team team) {
+        teams.put(name, team);
     }
 
     public String invitePlayer(UUID inviter,UUID player) {
@@ -109,11 +50,11 @@ public final class TeamManager {
 
     public String acceptJoin(String name, UUID player) {
         Team team = teams.get(name);
+        if (hasTeam(player)) return ChatColor.GREEN + "已有隊伍";
         if (team == null) return ChatColor.GREEN + "該隊伍不存在";
-        if (team.isTeamFull()) return ChatColor.GREEN + "隊伍已滿";
         if (!team.isInvited(player)) return ChatColor.GREEN + "你沒有被邀請";
         if (team.isMember(player)) return ChatColor.GREEN + "你已是該隊伍成員";
-        if (hasTeam(player)) return ChatColor.GREEN + "已有隊伍";
+        if (team.isTeamFull()) return ChatColor.GREEN + "隊伍已滿";
         if (!team.accept(player)) return ChatColor.GREEN + "加入失敗";
 
         return ChatColor.GREEN + "已成功加入" + ChatColor.YELLOW + name;
