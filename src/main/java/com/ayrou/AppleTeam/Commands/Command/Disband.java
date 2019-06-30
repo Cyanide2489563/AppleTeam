@@ -1,14 +1,14 @@
 package com.Ayrou.AppleTeam.Commands.Command;
 
 import com.Ayrou.AppleTeam.Commands.SubCommand;
-import com.Ayrou.AppleTeam.AppleTeam;
+import com.Ayrou.AppleTeam.Team.TeamManager;
 import org.bukkit.entity.Player;
 
 public class Disband extends SubCommand {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        player.sendMessage(AppleTeam.getTeamManager().disbandTeam(player.getUniqueId()));
+        player.sendMessage(TeamManager.getInstance().disbandTeam(player.getUniqueId()));
     }
 
     @Override
