@@ -11,11 +11,13 @@ public class Create extends SubCommand {
     public void onCommand(Player player, String[] args) {
         if (args.length > 1) {
             if (!TeamManager.getInstance().hasTeam(player.getUniqueId())) {
-
-                new TeamBuilder()
-                        .setName(args[1])
-                        .setLeader(player.getUniqueId())
-                        .create();
+                if (TeamBuilder.checkTeamName(args[1])) {
+                    new TeamBuilder()
+                            .setName(args[1])
+                            .setLeader(player.getUniqueId())
+                            .create();
+                }
+                else player.sendMessage("隊伍名稱不符合規範");
             }
             else player.sendMessage("你已有隊伍");
         }

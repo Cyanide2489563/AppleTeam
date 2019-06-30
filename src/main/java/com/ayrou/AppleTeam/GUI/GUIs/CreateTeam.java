@@ -2,6 +2,7 @@ package com.Ayrou.AppleTeam.GUI.GUIs;
 
 import com.Ayrou.AppleTeam.GUI.Component.AnvilGUI;
 import com.Ayrou.AppleTeam.GUI.SubGui;
+import com.Ayrou.AppleTeam.Team.TeamBuilder;
 import com.Ayrou.AppleTeam.Team.TeamManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,9 +31,13 @@ public class CreateTeam extends SubGui {
         GUI = new AnvilGUI(player, e -> {
             if(e.getSlot() == AnvilGUI.AnvilSlot.OUTPUT & e.hasText()) {
                 String name = e.getText();
-                if (checkTeamName(name)) {
-                    TeamManager
+                if (TeamBuilder.checkTeamName(name)) {
+                    new TeamBuilder()
+                            .setName(e.getText())
+                            .setLeader(player.getUniqueId())
+                            .create();
                 }
+                else player.sendMessage("隊伍名稱不符合規範");
                 player.sendMessage("你的隊伍名稱是" + e.getText());
                 e.setWillClose(true);
             }
@@ -42,24 +47,6 @@ public class CreateTeam extends SubGui {
         GUI.setSlotName(AnvilGUI.AnvilSlot.INPUT_LEFT,  "§r請輸入隊伍名稱");
         GUI.setTitle(titleName);
         GUI.open();
-    }
-
-    private boolean checkTeamName(String name) {
-
-        int num = 0;
-        boolean matches = true;
-        for (int i = 0,j = name.length(); i < j; i++) {
-            String temp = name.substring(i, i + 1);
-            if (temp.matches("[\u4e00-\u9fa5]")) {
-                num += 1;
-            }
-            else if (temp.matches("[a-zA-Z0-9]*")) {
-                num += 1;
-            }
-            else matches =! matches;
-        }
-
-        return (num <= 10 & num >= 3) & matches;
     }
 
     @Override
