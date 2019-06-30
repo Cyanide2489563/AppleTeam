@@ -2,6 +2,7 @@ package com.Ayrou.AppleTeam.GUI.GUIs;
 
 import com.Ayrou.AppleTeam.GUI.Component.AnvilGUI;
 import com.Ayrou.AppleTeam.GUI.SubGui;
+import com.Ayrou.AppleTeam.Team.TeamManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,43 +17,49 @@ public class CreateTeam extends SubGui {
     private ItemStack i = new ItemStack(Material.PAPER);
     private AnvilGUI GUI;
 
-    public String openCreateTeam(Player player) {
-        String name = "";
-
-
-        ItemStack i = new ItemStack(Material.PAPER);
+    public CreateTeam() {
         ItemMeta itemMeta = i.getItemMeta();
         ArrayList<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "輸入中英文大於3小於10");
         itemMeta.setLore(lore);
         i.setItemMeta(itemMeta);
-
-        GUI.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
-        GUI.setSlotName(AnvilGUI.AnvilSlot.INPUT_LEFT,  "§r請輸入隊伍名稱");
-        GUI.setTitle(titleName);
-        GUI.open();
-        return name;
     }
 
     @Override
     public void openInventory(Player player) {
         GUI = new AnvilGUI(player, e -> {
             if(e.getSlot() == AnvilGUI.AnvilSlot.OUTPUT & e.hasText()) {
-                e.setWillClose(true);
+                String name = e.getText();
+                if (checkTeamName(name)) {
+                    TeamManager
+                }
                 player.sendMessage("你的隊伍名稱是" + e.getText());
+                e.setWillClose(true);
             }
         });
-
-        ItemMeta itemMeta = i.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "輸入中英文大於3小於10");
-        itemMeta.setLore(lore);
-        i.setItemMeta(itemMeta);
 
         GUI.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
         GUI.setSlotName(AnvilGUI.AnvilSlot.INPUT_LEFT,  "§r請輸入隊伍名稱");
         GUI.setTitle(titleName);
         GUI.open();
+    }
+
+    private boolean checkTeamName(String name) {
+
+        int num = 0;
+        boolean matches = true;
+        for (int i = 0,j = name.length(); i < j; i++) {
+            String temp = name.substring(i, i + 1);
+            if (temp.matches("[\u4e00-\u9fa5]")) {
+                num += 1;
+            }
+            else if (temp.matches("[a-zA-Z0-9]*")) {
+                num += 1;
+            }
+            else matches =! matches;
+        }
+
+        return (num <= 10 & num >= 3) & matches;
     }
 
     @Override

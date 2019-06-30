@@ -22,8 +22,8 @@ import java.util.*;
 
 public final class Team {
 
-    private Message message = AppleTeam.getMessage();
-    private TeamManager teamManager = AppleTeam.getTeamManager();
+    private Message message = AppleTeam.getInstance().getMessage();
+    private TeamManager teamManager = TeamManager.getInstance();
     private String name;
     private UUID leader;
     private Visibility visibility;
@@ -63,8 +63,12 @@ public final class Team {
         return visibility;
     }
 
-    int getMemberSize() {
+    public int getMemberSize() {
         return members.size();
+    }
+
+    public UUID getLeader() {
+        return leader;
     }
 
     public ArrayList<String> getTeamMemberName() {

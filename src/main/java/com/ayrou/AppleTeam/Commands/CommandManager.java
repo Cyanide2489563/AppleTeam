@@ -15,7 +15,7 @@ public class CommandManager implements CommandExecutor {
 
     private ArrayList<SubCommand> commands = new ArrayList<>();
     private AppleTeam plugin = AppleTeam.getInstance();
-    private Message message = AppleTeam.getMessage();
+    private Message message = Message.getInstance();
     private String command = "team";
 
     public void setup() {

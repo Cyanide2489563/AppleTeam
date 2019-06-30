@@ -1,14 +1,15 @@
 package com.Ayrou.AppleTeam.Commands.Command;
 
 import com.Ayrou.AppleTeam.Commands.SubCommand;
-import com.Ayrou.AppleTeam.AppleTeam;
+import com.Ayrou.AppleTeam.Team.TeamManager;
 import org.bukkit.entity.Player;
 
 public class Accept extends SubCommand {
+
     @Override
     public void onCommand(Player player, String[] args) {
         if (args.length > 1) {
-            String status = AppleTeam.getTeamManager().acceptJoin(args[1], player.getUniqueId());
+            String status = TeamManager.getInstance().acceptJoin(args[1], player.getUniqueId());
             player.sendMessage(status);
         }
         else player.sendMessage("錯誤");

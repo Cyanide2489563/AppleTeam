@@ -1,5 +1,6 @@
 package com.Ayrou.AppleTeam;
 
+import com.Ayrou.AppleTeam.API.AppleTeamAPI;
 import com.Ayrou.AppleTeam.Commands.CommandManager;
 import com.Ayrou.AppleTeam.GUI.GUIManager;
 import com.Ayrou.AppleTeam.Listener.Connection;
@@ -23,7 +24,7 @@ public final class AppleTeam extends JavaPlugin {
 
     private static AppleTeam instance;
     private static Message message;
-    private static TeamManager teamManager;
+    private static AppleTeamAPI API;
     private static GUIManager guiManager;
 
     public AppleTeam() {
@@ -38,6 +39,7 @@ public final class AppleTeam extends JavaPlugin {
     public void onLoad() {
         setInstance(this);
         message = new Message();
+        API = new AppleTeamAPI(instance);
     }
 
     @Override
@@ -53,12 +55,12 @@ public final class AppleTeam extends JavaPlugin {
     private void initialization() {
         createData();
         info(message.getMessage("Plugin_Initialize"));
-        teamManager = TeamManager.getInstance();
+        TeamManager teamManager = TeamManager.getInstance();
         guiManager = new GUIManager();
         guiManager.setup();
         new CommandManager().setup();
         guiManager = new GUIManager();
-        new UpdateTask(instance,teamManager);
+        new UpdateTask(instance, teamManager);
         getServer().getPluginManager().registerEvents(new Connection(), this);
         getServer().getPluginManager().registerEvents(new Disconnection(), this);
         info("插件初始化完成");
@@ -76,15 +78,11 @@ public final class AppleTeam extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("[AppleTeam] §4" + string);
     }
 
-    public static TeamManager getTeamManager() {
-        return teamManager;
-    }
-
-    public static GUIManager getGuiManager() {
+    public GUIManager getGuiManager() {
         return guiManager;
     }
 
-    public static Message getMessage() {
+    public Message getMessage() {
         return message;
     }
 
