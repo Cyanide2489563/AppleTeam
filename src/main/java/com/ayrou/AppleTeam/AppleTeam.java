@@ -35,10 +35,14 @@ public final class AppleTeam extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+        setInstance(this);
+        message = new Message();
+    }
+
+    @Override
     public void onEnable() {
-        info(message.getMessage("Plugin_Initialize"));
         initialization();
-        info("插件初始化完成");
     }
 
     @Override
@@ -47,9 +51,8 @@ public final class AppleTeam extends JavaPlugin {
     }
 
     private void initialization() {
-        setInstance(this);
         createData();
-        message = new Message();
+        info(message.getMessage("Plugin_Initialize"));
         teamManager = TeamManager.getInstance();
         guiManager = new GUIManager();
         guiManager.setup();
@@ -58,6 +61,7 @@ public final class AppleTeam extends JavaPlugin {
         new UpdateTask(instance,teamManager);
         getServer().getPluginManager().registerEvents(new Connection(), this);
         getServer().getPluginManager().registerEvents(new Disconnection(), this);
+        info("插件初始化完成");
     }
 
     public static AppleTeam getInstance() {
@@ -96,11 +100,21 @@ public final class AppleTeam extends JavaPlugin {
         try {
 
             boolean isDirectoryCreated = languageFolder.exists();
+            boolean isLanguageFileCreated = languageFile.exists();
+            boolean isConfigFileCreated = configFile.exists();
+
+            if (isLanguageFileCreated || isConfigFileCreated) {
+                info("檔案已存在");
+                return;
+            }
+            else {
+                info("檔案不存在建立檔案");
+            }
+
             if (!isDirectoryCreated) {
                 isDirectoryCreated = languageFolder.mkdirs();
             }
 
-            boolean isLanguageFileCreated = languageFile.exists();
             if (isDirectoryCreated && !isLanguageFileCreated) {
                 info("建立檔案中");
                 isLanguageFileCreated = languageFile.createNewFile();
@@ -108,7 +122,6 @@ public final class AppleTeam extends JavaPlugin {
                 Files.copy(inputStream, Paths.get(getDataFolder() + "/Language/language.yml"), StandardCopyOption.REPLACE_EXISTING);
             }
 
-            boolean isConfigFileCreated = configFile.exists();
             if (!isConfigFileCreated) {
                 isConfigFileCreated = configFile.createNewFile();
                 InputStream inputStream = this.getClass().getResourceAsStream("/config.yml");
