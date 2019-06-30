@@ -31,14 +31,17 @@ public class CreateTeam extends SubGui {
         GUI = new AnvilGUI(player, e -> {
             if(e.getSlot() == AnvilGUI.AnvilSlot.OUTPUT & e.hasText()) {
                 String name = e.getText();
-                if (TeamBuilder.checkTeamName(name)) {
-                    new TeamBuilder()
-                            .setName(e.getText())
-                            .setLeader(player.getUniqueId())
-                            .create();
+                if (!TeamManager.getInstance().hasTeam(player.getUniqueId())) {
+                    if (TeamBuilder.checkTeamName(name)) {
+                        new TeamBuilder()
+                                .setName(e.getText())
+                                .setLeader(player.getUniqueId())
+                                .create();
+                        player.sendMessage("已成功建立隊伍");
+                    }
+                    else player.sendMessage("隊伍名稱不符合規範");
                 }
-                else player.sendMessage("隊伍名稱不符合規範");
-                player.sendMessage("你的隊伍名稱是" + e.getText());
+                else player.sendMessage("你已有隊伍");
                 e.setWillClose(true);
             }
         });

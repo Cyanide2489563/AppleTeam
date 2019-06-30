@@ -16,6 +16,7 @@ public class Create extends SubCommand {
                             .setName(args[1])
                             .setLeader(player.getUniqueId())
                             .create();
+                    player.sendMessage("已成功建立隊伍");
                 }
                 else player.sendMessage("隊伍名稱不符合規範");
             }
