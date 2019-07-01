@@ -1,5 +1,5 @@
 #隊伍插件
-Plugin_Initialize: "隊伍插件已初始化"
+Plugin_Initialize: "隊伍插件初始中"
 Plugin_Close: "隊伍插件已關閉"
 #命令
 Team_Command_Invalid_Sender: "錯誤的命令發送者"
