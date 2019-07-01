@@ -39,7 +39,10 @@ public class CreateTeam extends SubGui {
                                 .create();
                         player.sendMessage("已成功建立隊伍");
                     }
-                    else player.sendMessage("隊伍名稱不符合規範");
+                    else {
+                        player.sendMessage("隊伍名稱不符合規範");
+                        openInventory(player);
+                    }
                 }
                 else player.sendMessage("你已有隊伍");
                 e.setWillClose(true);
