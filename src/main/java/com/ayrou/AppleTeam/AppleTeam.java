@@ -2,6 +2,7 @@ package com.Ayrou.AppleTeam;
 
 import com.Ayrou.AppleTeam.API.AppleTeamAPI;
 import com.Ayrou.AppleTeam.Commands.CommandManager;
+import com.Ayrou.AppleTeam.Configuration.ConfigManager;
 import com.Ayrou.AppleTeam.GUI.GUIManager;
 import com.Ayrou.AppleTeam.Listener.Connection;
 import com.Ayrou.AppleTeam.Listener.Disconnection;
@@ -38,8 +39,9 @@ public final class AppleTeam extends JavaPlugin {
     @Override
     public void onLoad() {
         setInstance(this);
-        message = new Message();
         API = new AppleTeamAPI(instance);
+        message = new Message();
+        ConfigManager.getConfigManagerInstance();
     }
 
     @Override
@@ -53,7 +55,6 @@ public final class AppleTeam extends JavaPlugin {
     }
 
     private void initialization() {
-        createData();
         info(message.getMessage("Plugin_Initialize"));
         guiManager = new GUIManager();
         guiManager.setup();
@@ -87,57 +88,6 @@ public final class AppleTeam extends JavaPlugin {
 
     private void setInstance(AppleTeam instance) {
         AppleTeam.instance = instance;
-    }
-
-    private void createData() {
-
-        File languageFolder = new File(getDataFolder(), "Language");
-        File languageFile =  new File(languageFolder, "language.yml");
-        File configFile =  new File(getDataFolder(), "config.yml");
-        try {
-
-            boolean isDirectoryCreated = languageFolder.exists();
-            boolean isLanguageFileCreated = languageFile.exists();
-            boolean isConfigFileCreated = configFile.exists();
-
-            if (isLanguageFileCreated || isConfigFileCreated) {
-                info("檔案已存在");
-                return;
-            }
-            else {
-                info("檔案不存在建立檔案");
-            }
-
-            if (!isDirectoryCreated) {
-                isDirectoryCreated = languageFolder.mkdirs();
-            }
-
-            if (isDirectoryCreated && !isLanguageFileCreated) {
-                info("建立檔案中");
-                isLanguageFileCreated = languageFile.createNewFile();
-                InputStream inputStream = this.getClass().getResourceAsStream("/language.yml");
-                Files.copy(inputStream, Paths.get(getDataFolder() + "/Language/language.yml"), StandardCopyOption.REPLACE_EXISTING);
-            }
-
-            if (!isConfigFileCreated) {
-                isConfigFileCreated = configFile.createNewFile();
-                InputStream inputStream = this.getClass().getResourceAsStream("/config.yml");
-                Files.copy(inputStream, Paths.get(getDataFolder() + "/config.yml"), StandardCopyOption.REPLACE_EXISTING);
-            }
-
-            if (isLanguageFileCreated || isConfigFileCreated) {
-                info("建立檔案成功");
-            }
-            else {
-                info("建立檔案失敗");
-                Bukkit.getPluginManager().disablePlugins();
-            }
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
 }
