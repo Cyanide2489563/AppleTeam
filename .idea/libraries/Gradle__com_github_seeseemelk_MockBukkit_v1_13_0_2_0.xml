@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.seeseemelk:MockBukkit-v1.13:0.2.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.seeseemelk/MockBukkit-v1.13/0.2.0/ee0ed12f0fae3aa257582121b9aeb2af554edb16/MockBukkit-v1.13-0.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.seeseemelk/MockBukkit-v1.13/0.2.0/179f8bc6ddff366bbbcec82a476279fe5835a35c/MockBukkit-v1.13-0.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

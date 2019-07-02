@@ -24,6 +24,10 @@ repositories {
         name = 'placeholderapi'
         url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
+    maven {
+        name = 'wesjd-repo'
+        url = 'https://nexus.wesjd.net/repository/thirdparty/'
+    }
     flatDir {
         dirs 'lib'
     }
@@ -35,6 +39,7 @@ dependencies {
     compile name: 'spigot-1.13.2'
     compile 'me.clip:placeholderapi:2.10.3'
     compile 'com.github.stefvanschie.inventoryframework:IF:0.5.8'
+    compile 'net.wesjd:anvilgui:1.2.1-SNAPSHOT'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

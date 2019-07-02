@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Ayrou.AppleTeam:jar">
+    <output-path>$USER_HOME$/Desktop/DeBug/plugins</output-path>
+    <root id="archive" name="AppleTeam.jar">
+      <element id="module-output" name="Ayrou.AppleTeam.main" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/resources" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.stefvanschie.inventoryframework/IF/0.5.8/344de456d829ffb170de5b61fc9c251bd23d5c72/IF-0.5.8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.wesjd/anvilgui/1.2.1-SNAPSHOT/4dcc49d778baa30dfb710e32464c567a4af08e5e/anvilgui-1.2.1-SNAPSHOT.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
