@@ -1,58 +1,39 @@
 package com.Ayrou.AppleTeam.GUI.GUIs;
 
-import com.Ayrou.AppleTeam.GUI.Component.AnvilGUI;
+import com.Ayrou.AppleTeam.AppleTeam;
 import com.Ayrou.AppleTeam.GUI.SubGui;
 import com.Ayrou.AppleTeam.Team.TeamBuilder;
 import com.Ayrou.AppleTeam.Team.TeamManager;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
 
 public class CreateTeam extends SubGui {
 
     private String titleName = "建立隊伍";
-    private ItemStack i = new ItemStack(Material.PAPER);
-    private AnvilGUI GUI;
-
-    public CreateTeam() {
-        ItemMeta itemMeta = i.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "輸入中英文大於3小於10");
-        itemMeta.setLore(lore);
-        i.setItemMeta(itemMeta);
-    }
 
     @Override
     public void openInventory(Player player) {
-        GUI = new AnvilGUI(player, e -> {
-            if(e.getSlot() == AnvilGUI.AnvilSlot.OUTPUT & e.hasText()) {
-                String name = e.getText();
+        new AnvilGUI(AppleTeam.getInstance(), player, "隊伍名稱", (player1, reply) -> {
+            if (!reply.isEmpty()) {
                 if (!TeamManager.getInstance().hasTeam(player.getUniqueId())) {
-                    if (TeamBuilder.checkTeamName(name)) {
+                    if (TeamBuilder.checkTeamName(reply)) {
                         new TeamBuilder()
-                                .setName(e.getText())
+                                .setName(reply)
                                 .setLeader(player.getUniqueId())
                                 .create();
                         player.sendMessage("已成功建立隊伍");
-                    }
-                    else {
+                        return null;
+                    } else {
                         player.sendMessage("隊伍名稱不符合規範");
-                        openInventory(player);
+                        return "Incorrect.";
                     }
+                } else {
+                    player.sendMessage("你已有隊伍");
+                    return "Incorrect.";
                 }
-                else player.sendMessage("你已有隊伍");
-                e.setWillClose(true);
             }
+            return "Incorrect.";
         });
-
-        GUI.setSlot(AnvilGUI.AnvilSlot.INPUT_LEFT, i);
-        GUI.setSlotName(AnvilGUI.AnvilSlot.INPUT_LEFT,  "§r請輸入隊伍名稱");
-        GUI.setTitle(titleName);
-        GUI.open();
     }
 
     @Override
