@@ -13,9 +13,6 @@ public final class ConfigManager {
 
     private AppleTeam instance;
     private static ConfigManager ConfigManagerInstance;
-    String file[] = {"Language", "language.yml", "config.yml"};
-    private File path = instance.getDataFolder();
-    private File configFile;
 
     public ConfigManager() {
         this.instance = AppleTeam.getInstance();

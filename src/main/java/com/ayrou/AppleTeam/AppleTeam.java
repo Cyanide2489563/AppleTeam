@@ -7,16 +7,12 @@ import com.Ayrou.AppleTeam.GUI.GUIManager;
 import com.Ayrou.AppleTeam.Listener.Connection;
 import com.Ayrou.AppleTeam.Listener.Disconnection;
 import com.Ayrou.AppleTeam.Message.Message;
-import com.Ayrou.AppleTeam.Team.TeamManager;
 import com.Ayrou.AppleTeam.Utility.UpdateTask;
 
 import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -52,6 +48,9 @@ public final class AppleTeam extends JavaPlugin {
     @Override
     public void onDisable() {
         info(message.getMessage("Plugin_Close"));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getOpenInventory().close();
+        }
     }
 
     private void initialization() {
