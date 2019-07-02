@@ -35,9 +35,6 @@ repositories {
         name = 'wesjd-repo'
         url = 'https://nexus.wesjd.net/repository/thirdparty/'
     }
-    flatDir {
-        dirs 'lib'
-    }
 }
 
 dependencies {
