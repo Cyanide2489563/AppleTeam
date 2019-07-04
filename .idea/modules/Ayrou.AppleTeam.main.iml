@@ -3,6 +3,20 @@
   <component name="FacetManager">
     <facet type="minecraft" name="Minecraft">
       <configuration>
+        <userChosenTypes>
+          <map>
+            <entry key="PAPER" value="false" />
+            <entry key="SPIGOT" value="true" />
+            <entry key="BUKKIT" value="false" />
+            <entry key="FORGE" value="false" />
+            <entry key="SPONGE" value="false" />
+            <entry key="WATERFALL" value="false" />
+            <entry key="BUNGEECORD" value="false" />
+            <entry key="LITELOADER" value="false" />
+            <entry key="MIXIN" value="false" />
+            <entry key="MCP" value="false" />
+          </map>
+        </userChosenTypes>
         <autoDetectTypes>
           <platformType>SPIGOT</platformType>
         </autoDetectTypes>
@@ -22,17 +36,17 @@
     <orderEntry type="library" name="Gradle: com.github.stefvanschie.inventoryframework:IF:0.5.8" level="project" />
     <orderEntry type="library" name="Gradle: net.wesjd:anvilgui:1.2.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.hamcrest:hamcrest-core:1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: junit:junit:4.10" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: net.md-5:bungeecord-chat:1.13-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:21.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.yaml:snakeyaml:1.23" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.spigotmc:spigot:1.13.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: junit:junit:4.10" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.yaml:snakeyaml:1.23" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.spigotmc:spigot:1.13.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:21.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.bukkit:bukkit:1.13.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: net.md-5:bungeecord-chat:1.13-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.bukkit:craftbukkit:1.13.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
   </component>
 </module>

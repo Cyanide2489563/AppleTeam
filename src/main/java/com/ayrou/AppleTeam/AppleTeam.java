@@ -58,7 +58,6 @@ public final class AppleTeam extends JavaPlugin {
         guiManager = new GUIManager();
         guiManager.setup();
         new CommandManager().setup();
-        guiManager = new GUIManager();
         new UpdateTask(instance);
         getServer().getPluginManager().registerEvents(new Connection(), this);
         getServer().getPluginManager().registerEvents(new Disconnection(), this);

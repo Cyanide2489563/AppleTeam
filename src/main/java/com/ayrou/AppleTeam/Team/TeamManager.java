@@ -32,7 +32,11 @@ public final class TeamManager {
         teams.put(name, team);
     }
 
-    public String invitePlayer(UUID inviter,UUID player) {
+    public HashMap<String, Team> getTeams() {
+        return teams;
+    }
+
+    public String invitePlayer(UUID inviter, UUID player) {
         if (Bukkit.getPlayer(player) == null) return ChatColor.GREEN + "該玩家不存在";
         if (inviter.equals(player)) return ChatColor.GREEN + "你不能邀請自己";
 

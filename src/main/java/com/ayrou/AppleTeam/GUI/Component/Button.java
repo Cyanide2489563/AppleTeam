@@ -25,7 +25,6 @@ public class Button {
         ((Damageable) itemMeta).setDamage(type.getValue());
         itemMeta.setDisplayName(ChatColor.RESET + type.getName());
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
-        itemStack.setItemMeta(itemMeta);
     }
 
     public Button setLore(@NotNull String lore) {
@@ -35,6 +34,7 @@ public class Button {
     }
 
     public ItemStack create() {
+        itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 

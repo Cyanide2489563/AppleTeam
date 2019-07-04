@@ -1,14 +1,17 @@
 package com.Ayrou.AppleTeam.Commands.Command;
 
+import com.Ayrou.AppleTeam.AppleTeam;
 import com.Ayrou.AppleTeam.Commands.SubCommand;
-import com.Ayrou.AppleTeam.GUI.GUIs.TeamMenu;
+import com.Ayrou.AppleTeam.GUI.GUIManager;
 import org.bukkit.entity.Player;
 
 public class Menu extends SubCommand {
 
+    private GUIManager guiManager = AppleTeam.getInstance().getGuiManager();
+
     @Override
     public void onCommand(Player player, String[] args) {
-        new TeamMenu().openInventory(player);
+        guiManager.get("隊伍列表").openInventory(player);
     }
 
     @Override
