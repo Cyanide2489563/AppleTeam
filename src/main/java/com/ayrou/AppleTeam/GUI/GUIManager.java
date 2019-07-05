@@ -15,6 +15,10 @@ public class GUIManager {
         this.guiList.add(new Team_Setup());
     }
 
+    public void addGui(SubGui subGui) {
+        this.guiList.add(subGui);
+    }
+
     public SubGui get(String titleName) {
         for (SubGui subGui : this.guiList) {
             if (subGui.titleName().equalsIgnoreCase(titleName)) return subGui;
