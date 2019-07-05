@@ -27,6 +27,16 @@ public class Button {
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
     }
 
+    public Button(@NotNull ItemStack item) {
+        itemStack = item;
+        itemMeta = item.getItemMeta();
+    }
+
+    public Button setName(@NotNull String name) {
+        itemMeta.setDisplayName(name);
+        return this;
+    }
+
     public Button setLore(@NotNull String lore) {
         this.lore.add(lore);
         itemMeta.setLore(this.lore);
