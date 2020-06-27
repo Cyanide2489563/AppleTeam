@@ -1,21 +1,19 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
     id 'java'
+    id 'com.github.johnrengelman.shadow' version("6.0.0")
 }
+
 group = pluginGroup
-version = 0.1
+version = pluginVersion
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-shadowJar {
-    dependencies {
-        include (dependency('com.github.stefvanschie.inventoryframework:IF:0.5.8'))
-    }
-}
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
     maven {
         url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
     }
@@ -35,12 +33,11 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile 'com.github.seeseemelk:MockBukkit-v1.13:0.2.0'
-    compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
-    compileOnly 'org.bukkit:bukkit:1.13.2-R0.1-SNAPSHOT'
-    compileOnly 'org.spigotmc:spigot:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'org.jetbrains:annotations:16.0.2'
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.15:0.3.0-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
     compileOnly 'org.bukkit:craftbukkit:1.13.2-R0.1-SNAPSHOT'
-    compile 'me.clip:placeholderapi:2.10.3'
+    compileOnly 'me.clip:placeholderapi:2.10.6'
     compile 'com.github.stefvanschie.inventoryframework:IF:0.5.8'
     compile 'net.wesjd:anvilgui:1.2.1-SNAPSHOT'
 }
@@ -48,7 +45,19 @@ dependencies {
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
+    filteringCharset 'UTF-8'
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+shadowJar {
+    exclude "META-INF/*.SF"
+    exclude "META-INF/*.DSA"
+    exclude "META-INF/*.RSA"
+    destinationDirectory = file("C://Users/Cyanide/Desktop/Minecraft Server (test)/plugins/")
 }
